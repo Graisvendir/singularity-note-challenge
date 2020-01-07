@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_project/src/models/note_model.dart';
 import 'package:note_project/src/resources/repository.dart';
+import 'package:note_project/src/ui/pages/new_note_page.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -9,12 +10,11 @@ import 'blocks/notes_block.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
       theme: ThemeData.dark(),
       initialRoute: '/',
       routes: {
-        '/': (context) => MainPage()
+        '/': (context) => MainPage(),
       },
     );
   }
@@ -26,15 +26,24 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  NotesBloc bloc;
-  
+  PageController pageController;
+  MainBloc bloc;
+
   @override
   void initState() {
     super.initState();
+    pageController = PageController(initialPage: 1);
   
     final repository = Provider.of<Repository>(context, listen: false);
-    bloc = NotesBloc(repository);
+    bloc = MainBloc(repository);
     bloc.fetchAllNotes();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
+    bloc.dispose();
   }
 
   @override
@@ -42,26 +51,44 @@ class _MainPageState extends State<MainPage> {
     return Provider.value(
       value: bloc,
       child: Scaffold(
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: StreamBuilder<List<NoteModel>>(
-                stream: bloc.allNotes,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  return ListView(
-                    children: snapshot.data.map((n) => Text(n.key)).toList(),
-                  );
-                },
-              ),
-            ),
-            AddButton(),
-          ],
+        body: SafeArea(
+          child: PageView(
+            controller: pageController,
+            children: <Widget>[
+              Container(),
+              NewNotesPage(),
+              NotesPage(),
+            ],
+          )
         ),
       ),
+    );
+  }
+}
+
+class NotesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<MainBloc>(context);
+
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: StreamBuilder<List<NoteModel>>(
+            stream: bloc.allNotes,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              return ListView(
+                children: snapshot.data.map((n) => Text(n.key)).toList(),
+              );
+            },
+          ),
+        ),
+        AddButton(),
+      ],
     );
   }
 }
@@ -71,7 +98,7 @@ class AddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () {
-        final bloc = Provider.of<NotesBloc>(context, listen: false);
+        final bloc = Provider.of<MainBloc>(context, listen: false);
         NoteModel note = NoteModel()
           ..key = Uuid().v4()
           ..imgPath = 'imgPath'
@@ -83,33 +110,3 @@ class AddButton extends StatelessWidget {
     );
   }
 }
-
-// Scaffold(
-//         body: SafeArea(
-//           child: Column(
-//             children: <Widget>[
-//               MaterialButton(
-//                 onPressed: () {
-//                   final repo = Provider.of<Repository>(context, listen: false);
-//                   NoteModel note = NoteModel()
-//                     ..key = Uuid().v4()
-//                     ..imgPath = 'imgPath'
-//                     ..recieverList = [Reciever()..email = true..evernote = false..singularityApp = false]
-//                     ..text = 'text';
-//                   repo.notesProvider.put(note);
-//                   print(repo);
-//                 },
-//                 child: Text('put'),
-//               ),
-//               MaterialButton(
-//                 onPressed: () {
-//                   final repo = Provider.of<Repository>(context, listen: false);
-//                   final notes = repo.notesProvider.fetchAllNotes();
-//                   print(notes);
-//                 },
-//                 child: Text('fetch'),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),

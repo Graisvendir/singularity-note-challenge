@@ -3,8 +3,8 @@ import 'package:note_project/src/models/note_model.dart';
 import '../resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NotesBloc {
-  NotesBloc(this._repository);
+class MainBloc {
+  MainBloc(this._repository);
 
   final Repository _repository;
   final _allNotes = BehaviorSubject<List<NoteModel>>();
