@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:note_project/src/resources/email.dart';
 
 class NewNotesPage extends StatefulWidget {
   @override
@@ -26,17 +27,21 @@ class _NewNotesPageState extends State<NewNotesPage> {
        onVerticalDragEnd: (DragEndDetails dragEndDetails) {
       if(startDrag - updateDrag < 0) {
          _controller.clear();
+      } else {
+         sendEmail();
       }
       },
       child: 
       Column(
         children: <Widget>[
-            TextField(
+          Expanded(
+            child: TextField(
               controller: _controller,
               decoration: InputDecoration(
               border: InputBorder.none
             ),
             
+          )
           ),
           Center(
             child: _image == null
