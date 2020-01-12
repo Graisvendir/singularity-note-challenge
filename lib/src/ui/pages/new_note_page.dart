@@ -11,10 +11,22 @@ class NewNotesPage extends StatefulWidget {
 
 class _NewNotesPageState extends State<NewNotesPage> {
   File _image;
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = new TextEditingController();
     double startDrag;
     double updateDrag;
     return  GestureDetector(
