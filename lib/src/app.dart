@@ -10,7 +10,12 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+        fontFamily: 'HelveticaNeue-Light',
+        textTheme: TextTheme(
+          body1: TextStyle(fontSize: 18.0)
+        )
+      ),
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(),
@@ -54,12 +59,12 @@ class _MainPageState extends State<MainPage> {
           child: PageView(
             controller: pageController,
             children: <Widget>[
-              Container(),
-              NewNotesPage(),
               NotesPage(),
+              NewNotesPage(),
+              Container(),
             ],
           )
-        ),
+        )
       ),
     );
   }
