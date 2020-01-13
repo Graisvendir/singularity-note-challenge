@@ -62,9 +62,9 @@ class _MainPageState extends State<MainPage> {
           child: PageView(
             controller: pageController,
             children: <Widget>[
-              NotesPage(),
-              NewNotesPage(),
               SettingsPage(),
+              NewNotesPage(),
+              NotesPage(),
             ],
           )
         )
