@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:hive/hive.dart';
 import 'package:note_project/src/models/settings.dart';
 
-class NotesProvider {
+class SettingsProvider {
   Box box;
 
   Future<void> initBox() async {
@@ -15,8 +15,16 @@ class NotesProvider {
     return Hive.close();
   }
 
-  Future<void> put(String key, String setting) {
+  Future<void> putSetting(String key, setting) {
     return box.put(key, setting);
+  }
+  Future<void> put(Settings settings) {
+    putSetting('email', settings.email);
+    putSetting('evernote', settings.evernote);
+    putSetting('alwaysSyncEmail', settings.alwaysSyncEmail);
+    putSetting('alwaysSyncEvernote', settings.alwaysSyncEvernote);
+    putSetting('theme', settings.theme);
+    return null;
   }
 
   // получение всех заметок из базы
