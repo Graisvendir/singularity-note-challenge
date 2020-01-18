@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:hive/hive.dart';
+import 'package:note_project/src/constants.dart';
 import 'package:note_project/src/models/settings.dart';
 
 class SettingsProvider {
@@ -24,14 +25,14 @@ class SettingsProvider {
   }
 
   Future<void> put(Settings settings) {
-    putSetting('email', settings.email);
-    putSetting('evernote', settings.evernote);
-    putSetting('singLogin', settings.singLogin);
-    putSetting('singPass', settings.singPass);
-    putSetting('alwaysSyncEmail', settings.alwaysSyncEmail);
-    putSetting('alwaysSyncEvernote', settings.alwaysSyncEvernote);
-    putSetting('alwaysSyncSingularity', settings.alwaysSyncSingularity);
-    putSetting('theme', settings.theme);
+    putSetting(EMAIL, settings.email);
+    putSetting(EVERNOTE, settings.evernote);
+    putSetting(SING_LOGIN, settings.singLogin);
+    putSetting(SING_PASS, settings.singPass);
+    putSetting(ALWAYS_SYNC_EMAIL, settings.alwaysSyncEmail);
+    putSetting(ALWAYS_SYNC_EVERNOTE, settings.alwaysSyncEvernote);
+    putSetting(ALWAYS_SYNC_SINGULARITY, settings.alwaysSyncSingularity);
+    putSetting(THEME, settings.theme);
     return null;
   }
 
@@ -40,14 +41,14 @@ class SettingsProvider {
     await initBox();
     final defaultValue = Settings.empty();
 
-    String email = box.get('email');
-    String evernote = box.get('evernote');
-    String singLogin = box.get('singLogin');
-    String singPass = box.get('singPass');
-    bool alwaysSyncEmail = box.get('alwaysSyncEmail');
-    bool alwaysSyncEvernote = box.get('alwaysSyncEvernote');
-    bool alwaysSyncSingularity = box.get('alwaysSyncSingularity');
-    bool theme = box.get('theme') ?? defaultValue.theme;
+    String email = box.get(EMAIL);
+    String evernote = box.get(EVERNOTE);
+    String singLogin = box.get(SING_LOGIN);
+    String singPass = box.get(SING_PASS);
+    bool alwaysSyncEmail = box.get(ALWAYS_SYNC_EMAIL);
+    bool alwaysSyncEvernote = box.get(ALWAYS_SYNC_EVERNOTE);
+    bool alwaysSyncSingularity = box.get(ALWAYS_SYNC_SINGULARITY);
+    bool theme = box.get(THEME) ?? defaultValue.theme;
     return Settings(
       email, 
       evernote, 
