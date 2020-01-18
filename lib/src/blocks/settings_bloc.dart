@@ -10,15 +10,16 @@ class SettingsBloc {
   final Repository _repository;
   final _settings = BehaviorSubject<Settings>();
 
-  Observable<Settings> get allNotes => _settings.stream;
+  Observable<Settings> get settings => _settings.stream;
 
-  Future<void> fetchAllNotes() async {
+  Future<void> fetchSettings() async {
     final settings = await _repository.fetchSettings();
     _settings.sink.add(settings);
   }
 
   Future<void> put(Settings setting) async {
     await _repository.settingsProvider.put(setting);
+    _repository.currentSettings = setting;
     _settings.add(setting);
   }
 

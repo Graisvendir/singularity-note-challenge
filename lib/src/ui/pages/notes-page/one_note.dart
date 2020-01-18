@@ -23,8 +23,9 @@ class OneNoteState extends State<OneNote> {
         children: <Widget>[
           Container(
             child: Text(
-              this.data.text.substring(0, 100),
-              style: Theme.of(context).textTheme.body1
+              data.text,
+              style: Theme.of(context).textTheme.body1,
+              maxLines: 3,
             ),
             padding: EdgeInsets.only(bottom: 20.0),
           ),
