@@ -1,11 +1,5 @@
-import 'dart:async';
-import 'package:hive/hive.dart';
-
 import 'package:flutter/material.dart';
-import 'package:note_project/src/blocks/notes_block.dart';
-import 'package:note_project/src/models/note_model.dart';
-import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
+import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 
 class SingularitySettingsPage extends StatelessWidget {
   @override
@@ -27,22 +21,6 @@ class SingularitySettingsPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-class SaveButton extends StatefulWidget {
-  @override
-  _SaveButtonState createState() => _SaveButtonState();
-}
-
-class _SaveButtonState extends State<SaveButton> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () {
-        Navigator.pop(context);
-      },
-      child: Text('Save'),
     );
   }
 }
