@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/models/note_model.dart';
 import 'package:note_project/src/resources/repository.dart';
 import 'package:note_project/src/ui/pages/email_settings_page.dart';
@@ -35,6 +36,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   PageController pageController;
   MainBloc bloc;
+  SettingsBloc settingsBloc;
 
   @override
   void initState() {
@@ -44,6 +46,9 @@ class _MainPageState extends State<MainPage> {
     final repository = Provider.of<Repository>(context, listen: false);
     bloc = MainBloc(repository);
     bloc.fetchAllNotes();
+
+    settingsBloc = SettingsBloc(repository);
+    settingsBloc.fetchSettings();
   }
 
   @override
@@ -51,20 +56,24 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
     pageController.dispose();
     bloc.dispose();
+    settingsBloc.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Provider.value(
-      value: bloc,
+    return MultiProvider(
+      providers: [
+        Provider.value(value: bloc),
+        Provider.value(value: settingsBloc),
+      ],
       child: Scaffold(
         body: SafeArea(
           child: PageView(
             controller: pageController,
             children: <Widget>[
-              NotesPage(),
-              NewNotesPage(),
               SettingsPage(),
+              NewNotesPage(),
+              NotesPage(),
             ],
           )
         )
