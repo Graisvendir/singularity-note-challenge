@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_project/src/models/note_model.dart';
 import 'package:note_project/src/ui/pages/notes-page/synchronize_button.dart';
-import 'package:note_project/src/ui/pages/notes-page/synchronize_info.dart';
 
 class OneNote extends StatefulWidget {
 
@@ -18,28 +17,37 @@ class OneNoteState extends State<OneNote> {
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            child: Text(
-              data.text,
-              style: Theme.of(context).textTheme.body1,
-              maxLines: 3,
+    return GestureDetector(
+      onTap: synchronize,
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: Text(
+                data.text,
+                style: Theme.of(context).textTheme.body1,
+                maxLines: 3,
+              ),
+              padding: EdgeInsets.only(bottom: 20.0),
             ),
-            padding: EdgeInsets.only(bottom: 20.0),
-          ),
-          Container(
-            child: Row(
-              children: <Widget>[
-                SynchronizeButton(),
-                SynchronizeInfo(data: this.data)
-              ],
-            ),
-          )
-        ],
+            Container(
+              child: Row(
+                children: <Widget>[
+                  SynchronizeButton(),
+                  // TODO add print of synchronized accounts
+                  Text(this.data.dateCreated.toString())
+                ],
+              ),
+            )
+          ],
+        ),
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
       ),
-      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
     );
+  }
+
+  void synchronize() {
+    // TODO make synchrinization
+    print('synchronize note');
   }
 }

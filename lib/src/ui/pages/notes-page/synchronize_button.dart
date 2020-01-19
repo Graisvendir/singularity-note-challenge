@@ -8,14 +8,10 @@ class SynchronizeButton extends StatefulWidget {
 class SynchronizeButtonState extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
+    // TODO rotate icon on synchronize
     return Container(
-      child: IconButton(
-        icon: Icon(Icons.update, size: 20.0),
-        onPressed: () {
-          // TODO: synchronize note function call
-          print('synchronize note');
-        },
-      )
+      child: Icon(Icons.update, size: 20.0),
+      padding: EdgeInsets.only(right: 20.0),
     );
   }
 }

@@ -6,3 +6,7 @@ const ALWAYS_SYNC_EMAIL = 'alwaysSyncEmail';
 const ALWAYS_SYNC_EVERNOTE = 'alwaysSyncEvernote';
 const ALWAYS_SYNC_SINGULARITY = 'alwaysSyncSingularity';
 const THEME = 'theme';
+const IMAGE_WIDTH = 50.0;
+const IMAGE_HEIGHT = 50.0;
+const COLOR_GRAY = 0xFF2B2C37;
+const COLOR_WHITE = 0xFFFDFDFD;
