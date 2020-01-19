@@ -8,8 +8,6 @@ import 'notes_provider.dart';
 class Repository {
   final notesProvider = NotesProvider();
   final settingsProvider = SettingsProvider();
-  Settings currentSettings = Settings.empty();
 
   Future<List<NoteModel>> fetchAllNotes() => notesProvider.fetchAllNotes();
-  Future<Settings> fetchSettings() => settingsProvider.fetchSettings();
 }

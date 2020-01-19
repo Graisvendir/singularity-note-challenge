@@ -6,6 +6,7 @@ import 'package:note_project/src/blocks/notes_block.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/models/note_model.dart';
 import 'package:note_project/src/models/settings.dart';
+import 'package:note_project/src/resources/settings_provider.dart';
 import 'package:note_project/src/ui/pages/email_settings_page.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -29,24 +30,19 @@ class _SettingsPageState extends State<SettingsPage> {
         Text('SingularityApp'),
         OpenEmailSettings(),
         Text('Evernote'),
-       StreamBuilder<Settings>(
-         stream: bloc.settings,
-         builder: (context, snapshot) {
-           if (!snapshot.hasData) {
-             return Container();
-           }
-
-           return Checkbox(
-              value: snapshot.data.theme,
-                onChanged: (bool value) {
-                  final newSettings = snapshot.data;
-                  newSettings.theme = value;
-
-                  bloc.put(newSettings);
-                },
-            );
-         }
-       )
+        StreamBuilder(
+          stream: bloc.settings[Settings.theme],
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return Container();
+            
+            return Checkbox(
+                value: snapshot.data,
+                  onChanged: (bool value) {
+                    bloc.put(Settings.theme, value);
+                  },
+              );
+          }
+        )
       ],
     );
   }
