@@ -16,8 +16,6 @@ class SettingsPage extends StatefulWidget {
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-enum SettingName { email }
-
 class _SettingsPageState extends State<SettingsPage> {
   bool themeValue = false;
   

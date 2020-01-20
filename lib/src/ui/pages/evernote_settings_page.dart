@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 
 class EvernoteSettingsPage extends StatelessWidget {
@@ -12,12 +13,7 @@ class EvernoteSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsElements(),
             SaveButton(),
-            Expanded(
-              child: FittedBox(
-                fit: BoxFit.contain, // otherwise the logo will be tiny
-                child: const FlutterLogo(),
-              ),
-            ),
+            DeleteSync()
           ],
         ),
       ),

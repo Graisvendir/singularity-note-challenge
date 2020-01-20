@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 
 class SingularitySettingsPage extends StatelessWidget {
@@ -12,12 +13,7 @@ class SingularitySettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsElements(),
             SaveButton(),
-            Expanded(
-              child: FittedBox(
-                fit: BoxFit.contain, // otherwise the logo will be tiny
-                child: const FlutterLogo(),
-              ),
-            ),
+            DeleteSync()
           ],
         ),
       ),
@@ -39,13 +35,21 @@ class _SingularitySettingsState extends State<SettingsElements> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text('Email Setting'),
+        Text('Singularity App Setting'),
         TextField(
           obscureText: true,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
           ),
-        ), Checkbox(
+         
+        ),
+        TextField(
+          obscureText: true,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+          )
+        ), 
+        Checkbox(
           value: checkValue,
             onChanged: (bool value) {
                 setState(() {
