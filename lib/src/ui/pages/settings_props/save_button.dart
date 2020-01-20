@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SaveButton extends StatefulWidget {
-  @override
-  _SaveButtonState createState() => _SaveButtonState();
-}
+class SaveButton extends StatelessWidget {
+  final void Function() saveCallback;
 
-class _SaveButtonState extends State<SaveButton> {
+  const SaveButton({Key key, @required this.saveCallback}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () {
+        saveCallback();
         Navigator.pop(context);
       },
       child: Text('Save'),

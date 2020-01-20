@@ -25,9 +25,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Column(
       children: <Widget>[
-        Text('SingularityApp'),
+        OpenSingularitySettings(),
         OpenEmailSettings(),
-        Text('Evernote'),
+        OpenEvernoteSettings(),
         StreamBuilder(
           stream: bloc.settings[Settings.theme],
           builder: (context, snapshot) {
@@ -57,6 +57,34 @@ class OpenEmailSettings extends StatelessWidget {
           );
       },
       child: Text('Email'),
+    );
+  }
+}
+class OpenEvernoteSettings extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      onPressed: () {
+          Navigator.pushNamed(
+            context,
+            '/evernoteSettings',
+          );
+      },
+      child: Text('Evernote'),
+    );
+  }
+}
+class OpenSingularitySettings extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      onPressed: () {
+          Navigator.pushNamed(
+            context,
+            '/singularitySettings',
+          );
+      },
+      child: Text('Singularity App'),
     );
   }
 }

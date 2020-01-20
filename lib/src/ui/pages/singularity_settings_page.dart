@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:note_project/src/models/settings.dart';
+import 'package:note_project/src/resources/repository.dart';
 import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
+import 'package:provider/provider.dart';
+import 'package:note_project/src/blocks/settings_bloc.dart';
 
 class SingularitySettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<MainBloc>(context);
+    final repository = Provider.of<Repository>(context);
 
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: <Widget>[
-            SettingsElements(),
-            SaveButton(),
-            DeleteSync()
-          ],
+    var provider = Provider<SettingsBloc>(
+      create: (context) => SettingsBloc(repository)..fetchSettings(),
+      dispose: (context, bloc) => bloc.dispose(),
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: <Widget>[
+              SettingsElements(),
+              SaveButton(),
+              DeleteSync()
+            ],
+          ),
         ),
-      ),
+      )
     );
+    return provider;
   }
 }
 
@@ -33,6 +42,7 @@ class _SingularitySettingsState extends State<SettingsElements> {
 
   @override
   Widget build(BuildContext context) {
+    final settingsBloc = Provider.of<SettingsBloc>(context);
     return Column(
       children: <Widget>[
         Text('Singularity App Setting'),
@@ -41,7 +51,6 @@ class _SingularitySettingsState extends State<SettingsElements> {
           decoration: InputDecoration(
             border: OutlineInputBorder(),
           ),
-         
         ),
         TextField(
           obscureText: true,
@@ -49,15 +58,45 @@ class _SingularitySettingsState extends State<SettingsElements> {
             border: OutlineInputBorder(),
           )
         ), 
-        Checkbox(
-          value: checkValue,
-            onChanged: (bool value) {
-                setState(() {
-                    checkValue = value;
-                });
-            },
+        StreamBuilder(
+          stream: settingsBloc.settings[Settings.alwaysSyncSIngularity],
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return Container();
+            return Checkbox(
+              value: snapshot.data,
+              onChanged: (bool value) {
+                  settingsBloc.put(Settings.alwaysSyncSIngularity, value);
+              },
+            );
+          }
         )
       ],
     );
+    // return Column(
+    //   children: <Widget>[
+    //     Text('Singularity App Setting'),
+    //     TextField(
+    //       obscureText: true,
+    //       decoration: InputDecoration(
+    //         border: OutlineInputBorder(),
+    //       ),
+         
+    //     ),
+    //     TextField(
+    //       obscureText: true,
+    //       decoration: InputDecoration(
+    //         border: OutlineInputBorder(),
+    //       )
+    //     ), 
+    //     Checkbox(
+    //       value: checkValue,
+    //         onChanged: (bool value) {
+    //             setState(() {
+    //                 checkValue = value;
+    //             });
+    //         },
+    //     )
+    //   ],
+    // );
   }
 }

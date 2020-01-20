@@ -23,6 +23,5 @@ class MainBloc {
 
   Future<void> dispose() async {
     await _allNotes.close();
-    _repository.notesProvider.closeBox();
   }
 }
