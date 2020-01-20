@@ -16,7 +16,7 @@ class SingularitySettingsPage extends StatelessWidget {
       dispose: (context, bloc) => bloc.dispose(),
       child: SafeArea(
         child: Scaffold(
-          body: Column(
+          body: ListView(
             children: <Widget>[
               SettingsElements(),
               SaveButton(),

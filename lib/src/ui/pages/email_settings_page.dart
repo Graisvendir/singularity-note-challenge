@@ -42,7 +42,7 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
       value: bloc,
       child: SafeArea(
         child: Scaffold(
-          body: Column(
+          body: ListView(
             children: <Widget>[
               Column(
                 children: <Widget>[
