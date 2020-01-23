@@ -85,7 +85,14 @@ class _SingularitySettingsPageState extends State<SingularitySettingsPage> {
                   bloc.put(Settings.singPass, singularityPassController.value.text);
                 },
               ),
-              DeleteSync()
+              DeleteSync(
+                deleteCallback: () {
+                  singularityLoginController.clear();
+                  bloc.put(Settings.singLogin, singularityLoginController.value.text);
+                  singularityPassController.clear();
+                  bloc.put(Settings.singPass, singularityPassController.value.text);
+                }
+              )
             ],
           ),
         ),

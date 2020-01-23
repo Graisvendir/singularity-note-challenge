@@ -72,7 +72,12 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
                   bloc.put(Settings.email, emailController.value.text);
                 },
               ),
-              DeleteSync()
+              DeleteSync(
+                deleteCallback: () {
+                  emailController.clear();
+                  bloc.put(Settings.email, emailController.value.text);
+                }
+              )
             ],
           ),
         ),

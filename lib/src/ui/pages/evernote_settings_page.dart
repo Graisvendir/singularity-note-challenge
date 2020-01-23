@@ -71,7 +71,12 @@ class _EvernoteSettingsPageState extends State<EvernoteSettingsPage> {
                   bloc.put(Settings.evernote, evernoteController.value.text);
                 },
               ),
-              DeleteSync()
+              DeleteSync(
+                deleteCallback: () {
+                  evernoteController.clear();
+                  bloc.put(Settings.evernote, evernoteController.value.text);
+                }
+              )
             ],
           ),
         ),
