@@ -9,7 +9,7 @@ class SettingsBloc {
   SettingsBloc(this._repository) :
     settings = Map.unmodifiable({
       for (final key in Settings.values)
-        key: BehaviorSubject(seedValue: defaultSettings[key])
+        key: BehaviorSubject()
     });
 
   final Repository _repository;
