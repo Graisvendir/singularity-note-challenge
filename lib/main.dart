@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/models/note_model.dart';
 import 'package:note_project/src/resources/repository.dart';
 import 'package:path_provider/path_provider.dart';
@@ -15,9 +16,21 @@ Future<void> main() async {
   final repository = Repository();
   
   runApp(
-    Provider.value(
+    MultiProvider(
       child: App(),
-      value: repository
+      providers: [
+        Provider.value(
+          value: repository,
+        ),
+        Provider<SettingsBloc>(
+          create: (context) {
+            final bloc = SettingsBloc(repository);
+            bloc.fetchSettings();
+            return bloc;
+          },
+          dispose: (context, bloc) => bloc.dispose(),
+        ),
+      ],
     )
   );
 }

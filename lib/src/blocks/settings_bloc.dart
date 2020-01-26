@@ -9,7 +9,7 @@ class SettingsBloc {
   SettingsBloc(this._repository) :
     settings = Map.unmodifiable({
       for (final key in Settings.values)
-        key: BehaviorSubject(seedValue: defaultSettings[key])
+        key: BehaviorSubject()
     });
 
   final Repository _repository;
@@ -26,6 +26,16 @@ class SettingsBloc {
   Future<void> put(Settings setting, dynamic value) async {
     await _repository.settingsProvider.put(setting, value);
     settings[setting].add(value);
+  }
+
+  List<String> getRecievers() {
+    List<String> recievers = [];
+    final email = settings[Settings.email].value;
+    if (settings[Settings.alwaysSyncEmail].value && email != null && email != '') {
+      recievers.add(email);
+    }
+
+    return recievers;
   }
 
   Future<void> dispose() async {

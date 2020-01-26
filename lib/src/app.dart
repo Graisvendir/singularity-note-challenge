@@ -10,24 +10,36 @@ import 'package:note_project/src/ui/pages/settings_page.dart';
 import 'package:note_project/src/ui/pages/singularity_settings_page.dart';
 import 'package:provider/provider.dart';
 import 'blocks/notes_block.dart';
+import 'models/settings.dart';
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'HelveticaNeue-Light',
-        textTheme: TextTheme(
-          body1: TextStyle(fontSize: 18.0)
-        )
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => MainPage(),
-        EMAIL_SETTINGS_PATH: (context) => EmailSettingsPage(),
-        EVERNOTE_SETTINGS_PATH: (context) => EvernoteSettingsPage(),
-        SINGULARITY_SETTINGS_PATH: (context) => SingularitySettingsPage()
-      },
+    final bloc = Provider.of<SettingsBloc>(context);
+
+    return StreamBuilder(
+      stream: bloc.settings[Settings.theme],
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Container();
+
+        return MaterialApp(
+          theme: ThemeData(
+            fontFamily: 'HelveticaNeue-Light',
+            textTheme: TextTheme(
+              body1: TextStyle(fontSize: 18.0)
+            )
+          ),
+          darkTheme: ThemeData.dark(),
+          themeMode: snapshot.data ? ThemeMode.light : ThemeMode.dark,
+          initialRoute: '/',
+          routes: {
+            '/': (context) => MainPage(),
+            EMAIL_SETTINGS_PATH: (context) => EmailSettingsPage(),
+            EVERNOTE_SETTINGS_PATH: (context) => EvernoteSettingsPage(),
+            SINGULARITY_SETTINGS_PATH: (context) => SingularitySettingsPage()
+          },
+        );
+      }
     );
   }
 }
@@ -40,7 +52,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   PageController pageController;
   MainBloc bloc;
-  SettingsBloc settingsBloc;
 
   @override
   void initState() {
@@ -50,9 +61,6 @@ class _MainPageState extends State<MainPage> {
     final repository = Provider.of<Repository>(context, listen: false);
     bloc = MainBloc(repository);
     bloc.fetchAllNotes();
-
-    settingsBloc = SettingsBloc(repository);
-    settingsBloc.fetchSettings();
   }
 
   @override
@@ -60,7 +68,6 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
     pageController.dispose();
     bloc.dispose();
-    settingsBloc.dispose();
   }
 
   @override
@@ -68,7 +75,6 @@ class _MainPageState extends State<MainPage> {
     return MultiProvider(
       providers: [
         Provider.value(value: bloc),
-        Provider.value(value: settingsBloc),
       ],
       child: Scaffold(
         body: SafeArea(
