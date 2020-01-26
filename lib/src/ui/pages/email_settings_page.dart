@@ -42,44 +42,56 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
       value: bloc,
       child: SafeArea(
         child: Scaffold(
-          body: ListView(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text('Email Setting'),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    controller: emailController,
-                  ), 
-                  StreamBuilder(
-                    stream: bloc.settings[Settings.alwaysSyncEmail],
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) return Container();
-                      return Checkbox(
-                        value: snapshot.data,
-                        onChanged: (bool value) {
-                            bloc.put(Settings.alwaysSyncEmail, value);
-                        },
-                      );
-                    }
-                  )
-                ],
-              ),
-              SaveButton(
-                saveCallback: () {
-                  bloc.put(Settings.email, emailController.value.text);
-                },
-              ),
-              DeleteSync(
-                deleteCallback: () {
-                  emailController.clear();
-                  bloc.put(Settings.email, emailController.value.text);
-                }
-              )
-            ],
-          ),
+          body: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 40.0, 
+              horizontal: 30.0
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  child: Text('Email Setting'),
+                  padding: EdgeInsets.only(
+                    bottom: 15.0
+                  ),
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email Setting'
+                  ),
+                  controller: emailController,
+                ), 
+                StreamBuilder(
+                  stream: bloc.settings[Settings.alwaysSyncEmail],
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Container();
+                    return CheckboxListTile(
+                      title: Text('Always sync'),
+                      value: snapshot.data,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      onChanged: (bool value) {
+                        bloc.put(Settings.alwaysSyncEmail, value);
+                      },
+                    );
+                  }
+                ),
+                SaveButton(
+                  saveCallback: () {
+                    bloc.put(Settings.email, emailController.value.text);
+                  },
+                ),
+                DeleteSync(
+                  deleteCallback: () {
+                    emailController.clear();
+                    bloc.put(Settings.email, emailController.value.text);
+                  }
+                )
+              ],
+            ),
+          )
+          
         ),
       )
     );

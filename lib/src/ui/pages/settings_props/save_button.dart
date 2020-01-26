@@ -8,12 +8,13 @@ class SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
+    return FlatButton(
       onPressed: () {
         saveCallback();
         Navigator.pop(context);
       },
       child: Text('Save'),
+      
     );
   }
 }
