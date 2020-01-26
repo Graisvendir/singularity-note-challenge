@@ -6,15 +6,14 @@ import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 import 'package:provider/provider.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
 
-class EmailSettingsPage extends StatefulWidget {
+class EvernoteSettingsPage extends StatefulWidget {
   @override
-  _EmailSettingsPageState createState() => _EmailSettingsPageState();
+  _EvernoteSettingsPageState createState() => _EvernoteSettingsPageState();
 }
 
-class _EmailSettingsPageState extends State<EmailSettingsPage> {
-
+class _EvernoteSettingsPageState extends State<EvernoteSettingsPage> {
   bool checkValue = false;
-  TextEditingController emailController;
+  TextEditingController evernoteController;
   SettingsBloc bloc;
 
   @override
@@ -22,16 +21,16 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
     super.initState();
     final repository = Provider.of<Repository>(context, listen: false);
     bloc = SettingsBloc(repository);
-    emailController = TextEditingController();
+    evernoteController = TextEditingController();
 
     bloc.fetchSettings().then((value) {
-      emailController.text = bloc.settings[Settings.email].value;
+      evernoteController.text = bloc.settings[Settings.evernote].value;
     });
   }
 
-  @override
-  void dispose() {
-    emailController.dispose();
+   @override
+    void dispose() {
+    evernoteController.dispose();
     bloc.dispose();
     super.dispose();
   }
@@ -46,21 +45,21 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text('Email Setting'),
+                  Text('Evernote Setting'),
                   TextField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                     ),
-                    controller: emailController,
+                    controller: evernoteController,
                   ), 
                   StreamBuilder(
-                    stream: bloc.settings[Settings.alwaysSyncEmail],
+                    stream: bloc.settings[Settings.alwaysSyncEvernote],
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return Container();
                       return Checkbox(
                         value: snapshot.data,
                         onChanged: (bool value) {
-                            bloc.put(Settings.alwaysSyncEmail, value);
+                            bloc.put(Settings.alwaysSyncEvernote, value);
                         },
                       );
                     }
@@ -69,13 +68,13 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
               ),
               SaveButton(
                 saveCallback: () {
-                  bloc.put(Settings.email, emailController.value.text);
+                  bloc.put(Settings.evernote, evernoteController.value.text);
                 },
               ),
               DeleteSync(
                 deleteCallback: () {
-                  emailController.clear();
-                  bloc.put(Settings.email, emailController.value.text);
+                  evernoteController.clear();
+                  bloc.put(Settings.evernote, evernoteController.value.text);
                 }
               )
             ],

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
+import 'package:note_project/src/constants.dart';
 import 'package:note_project/src/models/note_model.dart';
 import 'package:note_project/src/resources/repository.dart';
 import 'package:note_project/src/ui/pages/email_settings_page.dart';
+import 'package:note_project/src/ui/pages/evernote_settings_page.dart';
 import 'package:note_project/src/ui/pages/new_note_page.dart';
 import 'package:note_project/src/ui/pages/notes_page.dart';
 import 'package:note_project/src/ui/pages/settings_page.dart';
+import 'package:note_project/src/ui/pages/singularity_settings_page.dart';
 import 'package:provider/provider.dart';
 import 'blocks/notes_block.dart';
 
@@ -22,7 +25,9 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(),
-        '/emailSettings': (context) => EmailSettingsPage()
+        EMAIL_SETTINGS_PATH: (context) => EmailSettingsPage(),
+        EVERNOTE_SETTINGS_PATH: (context) => EvernoteSettingsPage(),
+        SINGULARITY_SETTINGS_PATH: (context) => SingularitySettingsPage()
       },
     );
   }

@@ -12,7 +12,7 @@ class NotesProvider {
   }
 
   Future<void> closeBox() {
-    return Hive.close();
+    return box.close();
   }
 
   Future<void> put(NoteModel note) {
