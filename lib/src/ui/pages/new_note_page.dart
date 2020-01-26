@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/constants.dart';
+import 'package:note_project/src/models/note_model.dart';
+import 'package:note_project/src/models/settings.dart';
 import 'package:note_project/src/resources/email.dart';
+import 'package:uuid/uuid.dart';
+import '../../blocks/notes_block.dart';
 import 'package:provider/provider.dart';
 
 class NewNotesPage extends StatefulWidget {
@@ -28,9 +32,15 @@ class _NewNotesPageState extends State<NewNotesPage> {
     super.dispose();
   }
 
+  void clear() {
+    removeImage();
+    _controller.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<SettingsBloc>(context);
+    final mainBloc = Provider.of<MainBloc>(context);
     print(bloc.getRecievers());
 
     double startDrag;
@@ -43,10 +53,20 @@ class _NewNotesPageState extends State<NewNotesPage> {
        updateDrag = dragUpdateDetails.globalPosition.dy;
       },
        onVerticalDragEnd: (DragEndDetails dragEndDetails) {
-      if(startDrag - updateDrag < 0) {
-         _controller.clear();
+      if (startDrag - updateDrag < 0) {
+        clear();
       } else {
-          Sender.sendEmail(['fogelvogel1337@gmail.com'], 'aaa 1 dfdfd 223 dfds 1213', '');
+        Sender.sendEmail(bloc.getRecievers(), _controller.value.text, _image);
+        mainBloc.put(
+          NoteModel()
+          ..text = _controller.value.text
+          ..key = Uuid().v4()
+          ..imgPath = _image?.path
+          ..dateCreated = DateTime.now()
+          ..recievers = bloc.getRecieversBool()
+        );
+          
+        clear();
       }
       },
       child: 
@@ -116,13 +136,15 @@ class _NewNotesPageState extends State<NewNotesPage> {
   
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      setState(() {
+    setState(() {
       _image = image;
     });
   }
 
-  Future removeImage() async {
-    _image = null;
+  void removeImage() {
+    setState(() {
+      _image = null;
+    });
   }
 }
 

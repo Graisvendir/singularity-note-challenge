@@ -26,7 +26,7 @@ class NoteModel extends HiveObject {
   String imgPath;
 
   @HiveField(3)
-  List<Reciever> recieverList;
+  Reciever recievers;
 
   @HiveField(4)
   DateTime dateCreated;

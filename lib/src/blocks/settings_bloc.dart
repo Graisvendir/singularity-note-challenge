@@ -31,9 +31,24 @@ class SettingsBloc {
   List<String> getRecievers() {
     List<String> recievers = [];
     final email = settings[Settings.email].value;
+    final evernote = settings[Settings.evernote].value;
     if (settings[Settings.alwaysSyncEmail].value && email != null && email != '') {
       recievers.add(email);
     }
+    if (settings[Settings.alwaysSyncEvernote].value && evernote != null && evernote != '') {
+      recievers.add(evernote);
+    }
+
+    return recievers;
+  }
+
+  Reciever getRecieversBool() {
+    final email = settings[Settings.email].value;
+    final evernote = settings[Settings.evernote].value;
+
+    final recievers = Reciever()
+      ..email = settings[Settings.alwaysSyncEmail].value && email != null && email != ''
+      ..evernote = settings[Settings.alwaysSyncEvernote].value && evernote != null && evernote != '';
 
     return recievers;
   }

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:mailer/mailer.dart';
@@ -24,13 +25,19 @@ class Sender {
   static final password = 'G_b-2C!m4ec@nTj';
   static final smtpServer = SmtpServer('smtp.yandex.ru', username: username, password: password, port: 465, ssl: true);
 
-  static Message createEmail(List<String> recipients, String note, String imageAdress) {
+  static Message createEmail(List<String> recipients, String note, File image) {
     final mess = Message()
-     ..from = Address(username, 'Singularity Note');
-     recipients.forEach((f) => mess.recipients.add(f));
-     mess.text = note;
-     mess.subject = messCut(note);
+     ..from = Address(username, 'Singularity Note')
+     ..recipients = recipients
+     ..text = note
+     ..subject = messCut(note);
+
+    if (image != null && image.existsSync()) {
+      mess.attachments = [FileAttachment(image)];
+    }
+
     return mess;
+    
   }
 
   static String messCut(String note) {
@@ -44,8 +51,8 @@ class Sender {
     return subj;
   }
 
-  static Future<void> sendEmail(List<String> recipients, String note, String imageAdress) async{
-    Message message = createEmail(recipients, note, imageAdress);
+  static Future<void> sendEmail(List<String> recipients, String note, File image) async{
+    Message message = createEmail(recipients, note, image);
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());

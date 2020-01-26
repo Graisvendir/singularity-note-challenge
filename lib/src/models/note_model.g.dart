@@ -49,7 +49,7 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
       ..key = fields[0] as String
       ..text = fields[1] as String
       ..imgPath = fields[2] as String
-      ..recieverList = (fields[3] as List)?.cast<Reciever>()
+      ..recievers = fields[3] as Reciever
       ..dateCreated = fields[4] as DateTime;
   }
 
@@ -64,7 +64,7 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
       ..writeByte(2)
       ..write(obj.imgPath)
       ..writeByte(3)
-      ..write(obj.recieverList)
+      ..write(obj.recievers)
       ..writeByte(4)
       ..write(obj.dateCreated);
   }

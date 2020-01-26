@@ -26,27 +26,7 @@ class NotesPage extends StatelessWidget {
             },
           ),
         ),
-        AddButton(),
       ],
-    );
-  }
-}
-
-class AddButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () {
-        final bloc = Provider.of<MainBloc>(context, listen: false);
-        NoteModel note = NoteModel()
-          ..key = Uuid().v4()
-          ..imgPath = 'imgPath'
-          ..recieverList = [Reciever()..email = true..evernote = false..singularityApp = false]
-          ..text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-          ..dateCreated = new DateTime(2020, DateTime.january, 12);
-        bloc.put(note);
-      },
-      child: Text('add'),
     );
   }
 }
