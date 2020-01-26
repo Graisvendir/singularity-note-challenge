@@ -28,6 +28,16 @@ class SettingsBloc {
     settings[setting].add(value);
   }
 
+  List<String> getRecievers() {
+    List<String> recievers = [];
+    final email = settings[Settings.email].value;
+    if (settings[Settings.alwaysSyncEmail].value && email != null && email != '') {
+      recievers.add(email);
+    }
+
+    return recievers;
+  }
+
   Future<void> dispose() async {
     for (final key in settings.keys) {
       await settings[key].close();

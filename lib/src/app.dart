@@ -41,7 +41,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   PageController pageController;
   MainBloc bloc;
-  SettingsBloc settingsBloc;
 
   @override
   void initState() {
@@ -51,9 +50,6 @@ class _MainPageState extends State<MainPage> {
     final repository = Provider.of<Repository>(context, listen: false);
     bloc = MainBloc(repository);
     bloc.fetchAllNotes();
-
-    settingsBloc = SettingsBloc(repository);
-    settingsBloc.fetchSettings();
   }
 
   @override
@@ -61,7 +57,6 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
     pageController.dispose();
     bloc.dispose();
-    settingsBloc.dispose();
   }
 
   @override
@@ -69,7 +64,6 @@ class _MainPageState extends State<MainPage> {
     return MultiProvider(
       providers: [
         Provider.value(value: bloc),
-        Provider.value(value: settingsBloc),
       ],
       child: Scaffold(
         body: SafeArea(

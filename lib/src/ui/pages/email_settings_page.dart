@@ -15,13 +15,11 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
 
   bool checkValue = false;
   TextEditingController emailController;
-  SettingsBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    final repository = Provider.of<Repository>(context, listen: false);
-    bloc = SettingsBloc(repository);
+    final bloc = Provider.of<SettingsBloc>(context, listen: false);
     emailController = TextEditingController();
 
     bloc.fetchSettings().then((value) {
@@ -32,56 +30,54 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
   @override
   void dispose() {
     emailController.dispose();
-    bloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.value(
-      value: bloc,
-      child: SafeArea(
-        child: Scaffold(
-          body: ListView(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text('Email Setting'),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    controller: emailController,
-                  ), 
-                  StreamBuilder(
-                    stream: bloc.settings[Settings.alwaysSyncEmail],
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) return Container();
-                      return Checkbox(
-                        value: snapshot.data,
-                        onChanged: (bool value) {
-                            bloc.put(Settings.alwaysSyncEmail, value);
-                        },
-                      );
-                    }
-                  )
-                ],
-              ),
-              SaveButton(
-                saveCallback: () {
-                  bloc.put(Settings.email, emailController.value.text);
-                },
-              ),
-              DeleteSync(
-                deleteCallback: () {
-                  emailController.clear();
-                  bloc.put(Settings.email, emailController.value.text);
-                }
-              )
-            ],
-          ),
+    final bloc = Provider.of<SettingsBloc>(context, listen: false);
+    
+    var provider = SafeArea(
+      child: Scaffold(
+        body: ListView(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text('Email Setting'),
+                TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                  controller: emailController,
+                ), 
+                StreamBuilder(
+                  stream: bloc.settings[Settings.alwaysSyncEmail],
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Container();
+                    return Checkbox(
+                      value: snapshot.data,
+                      onChanged: (bool value) {
+                          bloc.put(Settings.alwaysSyncEmail, value);
+                      },
+                    );
+                  }
+                )
+              ],
+            ),
+            SaveButton(
+              saveCallback: () {
+                bloc.put(Settings.email, emailController.value.text);
+              },
+            ),
+            DeleteSync(
+              deleteCallback: () {
+                emailController.clear();
+                bloc.put(Settings.email, emailController.value.text);
+              }
+            )
+          ],
         ),
-      )
+      ),
     );
     return provider;
   }

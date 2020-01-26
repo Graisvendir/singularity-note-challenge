@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/constants.dart';
 import 'package:note_project/src/resources/email.dart';
+import 'package:provider/provider.dart';
 
 class NewNotesPage extends StatefulWidget {
   @override
@@ -28,6 +30,9 @@ class _NewNotesPageState extends State<NewNotesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.of<SettingsBloc>(context);
+    print(bloc.getRecievers());
+
     double startDrag;
     double updateDrag;
     return  GestureDetector(
@@ -41,7 +46,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
       if(startDrag - updateDrag < 0) {
          _controller.clear();
       } else {
-         sendEmail();
+          Sender.sendEmail(['fogelvogel1337@gmail.com'], 'aaa 1 dfdfd 223 dfds 1213', '');
       }
       },
       child: 
