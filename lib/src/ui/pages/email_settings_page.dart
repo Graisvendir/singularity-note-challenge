@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:note_project/src/models/settings.dart';
-import 'package:note_project/src/resources/repository.dart';
 import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 import 'package:provider/provider.dart';
@@ -36,49 +35,63 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<SettingsBloc>(context, listen: false);
-    
+
     var provider = SafeArea(
       child: Scaffold(
-        body: ListView(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text('Email Setting'),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  controller: emailController,
-                ), 
-                StreamBuilder(
-                  stream: bloc.settings[Settings.alwaysSyncEmail],
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Container();
-                    return Checkbox(
-                      value: snapshot.data,
-                      onChanged: (bool value) {
-                          bloc.put(Settings.alwaysSyncEmail, value);
-                      },
-                    );
-                  }
-                )
-              ],
-            ),
-            SaveButton(
-              saveCallback: () {
-                bloc.put(Settings.email, emailController.value.text);
-              },
-            ),
-            DeleteSync(
-              deleteCallback: () {
-                emailController.clear();
-                bloc.put(Settings.email, emailController.value.text);
-              }
-            )
-          ],
-        ),
+        body: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: 40.0, 
+            horizontal: 30.0
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                child: Text('Email Setting'),
+                padding: EdgeInsets.only(
+                  bottom: 15.0
+                ),
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Email Setting'
+                ),
+                controller: emailController,
+              ), 
+              StreamBuilder(
+                stream: bloc.settings[Settings.alwaysSyncEmail],
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return Container();
+                  
+                  return CheckboxListTile(
+                    title: Text('Always sync'),
+                    value: snapshot.data,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (bool value) {
+                      bloc.put(Settings.alwaysSyncEmail, value);
+                    },
+                  );
+                }
+              ),
+              SaveButton(
+                saveCallback: () {
+                  bloc.put(Settings.email, emailController.value.text);
+                },
+              ),
+              DeleteSync(
+                deleteCallback: () {
+                  emailController.clear();
+                  bloc.put(Settings.email, emailController.value.text);
+                }
+              )
+            ],
+          ),
+        )
+          
       ),
     );
+
     return provider;
   }
 }
