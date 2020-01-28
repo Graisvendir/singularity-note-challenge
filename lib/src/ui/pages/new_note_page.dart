@@ -48,23 +48,26 @@ class _NewNotesPageState extends State<NewNotesPage> {
     return  GestureDetector(
       onVerticalDragStart: (DragStartDetails dragStartDetails) {
        startDrag = dragStartDetails.globalPosition.dy;
+       
       },
       onVerticalDragUpdate: (DragUpdateDetails dragUpdateDetails) {
+        //место для показа пальца вверх или вниз
        updateDrag = dragUpdateDetails.globalPosition.dy;
       },
        onVerticalDragEnd: (DragEndDetails dragEndDetails) {
-      if (startDrag - updateDrag < 0) {
+      if (startDrag - updateDrag < -40) {
         clear();
-      } else {
-        Sender.sendEmail(bloc.getRecievers(), _controller.value.text, _image);
-        mainBloc.put(
-          NoteModel()
+      } else if (startDrag - updateDrag > 40) {
+        final NoteModel note = NoteModel()
           ..text = _controller.value.text
           ..key = Uuid().v4()
           ..imgPath = _image?.path
           ..dateCreated = DateTime.now()
-          ..recievers = bloc.getRecieversBool()
-        );
+          ..recievers = bloc.getRecieversBool();
+
+        Sender.sendEmail(bloc.getRecievers(), note);
+
+        mainBloc.put(note);
           
         clear();
       }

@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/widgets.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:note_project/src/models/note_model.dart';
 
 void sendEmail() async {
     final username = 'noteproject@yandex.ru';
@@ -25,13 +27,15 @@ class Sender {
   static final password = 'G_b-2C!m4ec@nTj';
   static final smtpServer = SmtpServer('smtp.yandex.ru', username: username, password: password, port: 465, ssl: true);
 
-  static Message createEmail(List<String> recipients, String note, File image) {
+  static Message createEmail(List<String> recipients, String note, String imagePath) {
     final mess = Message()
      ..from = Address(username, 'Singularity Note')
      ..recipients = recipients
      ..text = note
      ..subject = messCut(note);
 
+    final image = File(imagePath);
+    
     if (image != null && image.existsSync()) {
       mess.attachments = [FileAttachment(image)];
     }
@@ -51,8 +55,8 @@ class Sender {
     return subj;
   }
 
-  static Future<void> sendEmail(List<String> recipients, String note, File image) async{
-    Message message = createEmail(recipients, note, image);
+  static Future<void> sendEmail(List<String> recipients, NoteModel noteToSend) async{
+    Message message = createEmail(recipients, noteToSend.text, noteToSend.imgPath);
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
@@ -64,40 +68,3 @@ class Sender {
     }
   }
 }
-  // DONE
-  
-  
-  // Let's send another message using a slightly different syntax:
-  //
-  // Addresses without a name part can be set directly.
-  // For instance `..recipients.add('destination@example.com')`
-  // If you want to display a name part you have to create an
-  // Address object: `new Address('destination@example.com', 'Display name part')`
-  // Creating and adding an Address object without a name part
-  // `new Address('destination@example.com')` is equivalent to
-  // adding the mail address as `String`.
-  // final equivalentMessage = Message()
-  //     ..from = Address(username, 'Your name')
-  //     ..recipients.add(Address('fogelvogel1337@gmail.com'))
-  //     ..ccRecipients.addAll([Address('fogelvogel1337@gmail.com'), 'fogelvogel1337@gmail.com'])
-  //     ..bccRecipients.add('fogelvogel1337@gmail.com')
-  //     ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}'
-  //     ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-  //     ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
-    
-  // final sendReport2 = await send(equivalentMessage, smtpServer);
-  
-  // Sending multiple messages with the same connection
-  //
-  // Create a smtp client that will persist the connection
-  // var connection = PersistentConnection(smtpServer);
-  
-  // // Send the first message
-  // await connection.send(message);
-  
-  // // send the equivalent message
-  // await connection.send(equivalentMessage);
-  
-  // // close the connection
-  // await connection.close();
-  
