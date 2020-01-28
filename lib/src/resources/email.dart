@@ -34,10 +34,12 @@ class Sender {
      ..text = note
      ..subject = messCut(note);
 
-    final image = File(imagePath);
+    if (imagePath != null) {
+      final image = File(imagePath);
     
-    if (image != null && image.existsSync()) {
-      mess.attachments = [FileAttachment(image)];
+      if (image != null && image.existsSync()) {
+        mess.attachments = [FileAttachment(image)];
+      }
     }
 
     return mess;
