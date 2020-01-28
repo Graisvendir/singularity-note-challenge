@@ -55,16 +55,18 @@ class Sender {
     return subj;
   }
 
-  static Future<void> sendEmail(List<String> recipients, NoteModel noteToSend) async{
+  static Future<bool> sendEmail(List<String> recipients, NoteModel noteToSend) async{
     Message message = createEmail(recipients, noteToSend.text, noteToSend.imgPath);
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
+      return true;
     } on MailerException catch (e) {
       print('Message not sent.');
       for (var p in e.problems) {
         print('Problem: ${p.code}: ${p.msg}');
       }
+      return false;
     }
   }
 }

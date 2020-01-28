@@ -50,13 +50,14 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
       ..text = fields[1] as String
       ..imgPath = fields[2] as String
       ..recievers = fields[3] as Reciever
-      ..dateCreated = fields[4] as DateTime;
+      ..dateCreated = fields[4] as DateTime
+      ..wasSentSuccessfully = fields[5] as bool;
   }
 
   @override
   void write(BinaryWriter writer, NoteModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.key)
       ..writeByte(1)
@@ -66,6 +67,8 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
       ..writeByte(3)
       ..write(obj.recievers)
       ..writeByte(4)
-      ..write(obj.dateCreated);
+      ..write(obj.dateCreated)
+      ..writeByte(5)
+      ..write(obj.wasSentSuccessfully);
   }
 }

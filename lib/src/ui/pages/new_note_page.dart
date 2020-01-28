@@ -54,7 +54,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
         //место для показа пальца вверх или вниз
        updateDrag = dragUpdateDetails.globalPosition.dy;
       },
-       onVerticalDragEnd: (DragEndDetails dragEndDetails) {
+       onVerticalDragEnd: (DragEndDetails dragEndDetails) async {
       if (startDrag - updateDrag < -40) {
         clear();
       } else if (startDrag - updateDrag > 40) {
@@ -65,7 +65,9 @@ class _NewNotesPageState extends State<NewNotesPage> {
           ..dateCreated = DateTime.now()
           ..recievers = bloc.getRecieversBool();
 
-        Sender.sendEmail(bloc.getRecievers(), note);
+        bool success = await Sender.sendEmail(bloc.getRecievers(), note);
+
+        note.wasSentSuccessfully = success;
 
         mainBloc.put(note);
           
