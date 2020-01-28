@@ -5,6 +5,8 @@ import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 import 'package:provider/provider.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
+import 'package:note_project/src/resources/localisation.dart';
+
 
 class EvernoteSettingsPage extends StatefulWidget {
   @override
@@ -42,7 +44,7 @@ class _EvernoteSettingsPageState extends State<EvernoteSettingsPage> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                Text('Evernote Setting'),
+                Text(localize(EVERNOTE_SETTINGS, context)),
                 TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -53,10 +55,11 @@ class _EvernoteSettingsPageState extends State<EvernoteSettingsPage> {
                   stream: bloc.settings[Settings.alwaysSyncEvernote],
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return Container();
-                    return Checkbox(
+                    return CheckboxListTile(
+                      title: Text(localize(ALWAYS_SYNC, context)),
                       value: snapshot.data,
                       onChanged: (bool value) {
-                          bloc.put(Settings.alwaysSyncEvernote, value);
+                        bloc.put(Settings.alwaysSyncEvernote, value);
                       },
                     );
                   }

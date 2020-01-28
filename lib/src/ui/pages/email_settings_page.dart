@@ -4,6 +4,7 @@ import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 import 'package:provider/provider.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
+import 'package:note_project/src/resources/localisation.dart';
 
 class EmailSettingsPage extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                child: Text('Email Setting'),
+                child: Text(localize(EMAIL_SETTINGS, context)),
                 padding: EdgeInsets.only(
                   bottom: 15.0
                 ),
@@ -55,7 +56,7 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
               TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Email Setting'
+                  labelText: localize(EMAIL_SETTINGS, context)
                 ),
                 controller: emailController,
               ), 
@@ -65,7 +66,7 @@ class _EmailSettingsPageState extends State<EmailSettingsPage> {
                   if (!snapshot.hasData) return Container();
                   
                   return CheckboxListTile(
-                    title: Text('Always sync'),
+                    title: Text(localize(ALWAYS_SYNC, context)),
                     value: snapshot.data,
                     controlAffinity: ListTileControlAffinity.leading,
                     onChanged: (bool value) {

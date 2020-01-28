@@ -5,6 +5,8 @@ import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 import 'package:provider/provider.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
+import 'package:note_project/src/resources/localisation.dart';
+
 
 class SingularitySettingsPage extends StatefulWidget {
   @override
@@ -47,7 +49,7 @@ class _SingularitySettingsPageState extends State<SingularitySettingsPage> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                Text('SingularityApp Setting'),
+                Text(localize(SING_SETTINGS, context)),
                 //логин
                 TextField(
                   decoration: InputDecoration(
@@ -66,7 +68,8 @@ class _SingularitySettingsPageState extends State<SingularitySettingsPage> {
                   stream: bloc.settings[Settings.alwaysSyncSIngularity],
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return Container();
-                    return Checkbox(
+                    return CheckboxListTile(
+                      title: Text(localize(ALWAYS_SYNC, context)),
                       value: snapshot.data,
                       onChanged: (bool value) {
                           bloc.put(Settings.alwaysSyncSIngularity, value);

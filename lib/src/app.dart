@@ -38,6 +38,10 @@ class App extends StatelessWidget {
             EVERNOTE_SETTINGS_PATH: (context) => EvernoteSettingsPage(),
             SINGULARITY_SETTINGS_PATH: (context) => SingularitySettingsPage()
           },
+          supportedLocales: [
+            const Locale('en', 'US'), // English
+            const Locale('ru', 'RU'), // Russian
+          ],
         );
       }
     );

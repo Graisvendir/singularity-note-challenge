@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 const LIGHT_THEME = ['Light theme', 'Светлая тема'];
 const DARK_THEME = ['Dark theme', 'Темная тема'];
 const SING_APP_TRY_NOW = ['Singularity App — try now', 'Singularity App — попробуйте сейчас'];
@@ -15,3 +17,14 @@ const EMAIL_ADRESS = ['Email Adress', 'Адрес почты'];
 const EMAIL_SETTINGS = ['Email Settings', 'Настройки почты'];
 const SING_SETTINGS = ['Singularity App Settings', 'Настройки Singularity App'];
 const EVERNOTE_SETTINGS = ['Evernote Settings', 'Настройки Evernote'];
+
+String localize(List<String> textConstant, context) {
+  Locale myLocale = Localizations.localeOf(context);
+  print(myLocale.languageCode);
+  print(myLocale.countryCode);
+  if (myLocale.languageCode == 'en') {
+    return textConstant.first;
+  } else {
+    return textConstant.last;
+  }
+}

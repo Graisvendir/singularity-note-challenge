@@ -82,8 +82,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
                 autofocus: true,
                 cursorColor: Color(0x000),
                 decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Please, enter a lot of text'
+                  border: InputBorder.none
                 ),
                 keyboardType: TextInputType.multiline,
                 maxLines: null,

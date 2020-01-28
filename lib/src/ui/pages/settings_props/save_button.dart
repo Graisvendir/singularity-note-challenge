@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:note_project/src/resources/localisation.dart';
 
 class SaveButton extends StatelessWidget {
   final void Function() saveCallback;
@@ -13,7 +14,7 @@ class SaveButton extends StatelessWidget {
         saveCallback();
         Navigator.pop(context);
       },
-      child: Text('Save'),
+      child: Text(localize(SAVE, context)),
       
     );
   }

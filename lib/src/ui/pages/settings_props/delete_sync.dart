@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:note_project/src/resources/localisation.dart';
 
 class DeleteSync extends StatelessWidget {
   final void Function() deleteCallback;
@@ -13,7 +14,7 @@ class DeleteSync extends StatelessWidget {
         deleteCallback();
         Navigator.pop(context);
       },
-      child: Text('Delete this sync'),
+      child: Text(localize(DELETE_SYNC, context)),
     );
   }
 }
