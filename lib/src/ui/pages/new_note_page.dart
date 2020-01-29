@@ -12,6 +12,10 @@ import '../../blocks/notes_block.dart';
 import 'package:provider/provider.dart';
 
 class NewNotesPage extends StatefulWidget {
+  final PageController pageController;
+
+  const NewNotesPage({Key key, this.pageController}) : super(key: key);
+
   @override
   _NewNotesPageState createState() => _NewNotesPageState();
 }
@@ -41,6 +45,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
   Widget build(BuildContext context) {
     final bloc = Provider.of<SettingsBloc>(context);
     final mainBloc = Provider.of<MainBloc>(context);
+    
     print(bloc.getRecievers());
 
     double startDrag;
@@ -58,20 +63,26 @@ class _NewNotesPageState extends State<NewNotesPage> {
       if (startDrag - updateDrag < -40) {
         clear();
       } else if (startDrag - updateDrag > 40) {
-        final NoteModel note = NoteModel()
+        Reciever reciever = bloc.getRecieversBool();
+        if(reciever.email == true || reciever.evernote == true || reciever.singularityApp == true) {
+          final NoteModel note = NoteModel()
           ..text = _controller.value.text
           ..key = Uuid().v4()
           ..imgPath = _image?.path
           ..dateCreated = DateTime.now()
-          ..recievers = bloc.getRecieversBool();
+          ..recievers = reciever;
 
-        bool success = await Sender.sendEmail(bloc.getRecievers(), note);
+          bool success = await Sender.sendEmail(bloc.getRecievers(), note);
 
-        note.wasSentSuccessfully = success;
+          note.wasSentSuccessfully = success;
 
-        mainBloc.put(note);
-          
-        clear();
+          mainBloc.put(note);
+            
+          clear();
+        } else {
+          widget.pageController.jumpToPage(0);
+          print('adsdadsadsadd');
+        }
       }
       },
       child: 
