@@ -86,7 +86,7 @@ class _MainPageState extends State<MainPage> {
             controller: pageController,
             children: <Widget>[
               SettingsPage(),
-              NewNotesPage(),
+              NewNotesPage(pageController: pageController),
               NotesPage(),
             ],
           )

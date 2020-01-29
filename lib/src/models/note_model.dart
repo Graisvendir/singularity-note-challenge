@@ -30,4 +30,7 @@ class NoteModel extends HiveObject {
 
   @HiveField(4)
   DateTime dateCreated;
+
+  @HiveField(5)
+  bool wasSentSuccessfully;
 }

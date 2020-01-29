@@ -45,10 +45,12 @@ class SettingsBloc {
   Reciever getRecieversBool() {
     final email = settings[Settings.email].value;
     final evernote = settings[Settings.evernote].value;
+    final singularity = settings[Settings.singLogin].value;
 
     final recievers = Reciever()
       ..email = settings[Settings.alwaysSyncEmail].value && email != null && email != ''
-      ..evernote = settings[Settings.alwaysSyncEvernote].value && evernote != null && evernote != '';
+      ..evernote = settings[Settings.alwaysSyncEvernote].value && evernote != null && evernote != ''
+      ..singularityApp = settings[Settings.alwaysSyncSIngularity].value && singularity != null && singularity != '';
 
     return recievers;
   }
