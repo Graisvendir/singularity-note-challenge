@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/constants.dart';
@@ -55,12 +57,15 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   PageController pageController;
+  TextEditingController textController;
   MainBloc bloc;
+  File image;
 
   @override
   void initState() {
     super.initState();
     pageController = PageController(initialPage: 1);
+    textController = TextEditingController();
   
     final repository = Provider.of<Repository>(context, listen: false);
     bloc = MainBloc(repository);
@@ -71,6 +76,7 @@ class _MainPageState extends State<MainPage> {
   void dispose() {
     super.dispose();
     pageController.dispose();
+    textController.dispose();
     bloc.dispose();
   }
 
@@ -86,7 +92,16 @@ class _MainPageState extends State<MainPage> {
             controller: pageController,
             children: <Widget>[
               SettingsPage(),
-              NewNotesPage(pageController: pageController),
+              NewNotesPage(
+                pageController: pageController,
+                controller: textController,
+                setImage: (f) {
+                  setState(() {
+                    image = f;
+                  });
+                },
+                image: image,
+              ),
               NotesPage(),
             ],
           )

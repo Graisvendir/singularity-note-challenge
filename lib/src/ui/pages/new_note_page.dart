@@ -14,31 +14,20 @@ import 'package:provider/provider.dart';
 class NewNotesPage extends StatefulWidget {
   final PageController pageController;
 
-  const NewNotesPage({Key key, this.pageController}) : super(key: key);
+  final TextEditingController controller;
+  final File image;
+  final void Function(File) setImage;
+
+  const NewNotesPage({Key key, this.controller, this.setImage, this.image, this.pageController}) : super(key: key);
 
   @override
   _NewNotesPageState createState() => _NewNotesPageState();
 }
 
 class _NewNotesPageState extends State<NewNotesPage> {
-  File _image;
-  TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = new TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   void clear() {
     removeImage();
-    _controller.clear();
+    widget.controller.clear();
   }
 
   @override
@@ -66,9 +55,9 @@ class _NewNotesPageState extends State<NewNotesPage> {
         Reciever reciever = bloc.getRecieversBool();
         if(reciever.email == true || reciever.evernote == true || reciever.singularityApp == true) {
           final NoteModel note = NoteModel()
-          ..text = _controller.value.text
+          ..text = widget.controller.value.text
           ..key = Uuid().v4()
-          ..imgPath = _image?.path
+          ..imgPath = widget.image?.path
           ..dateCreated = DateTime.now()
           ..recievers = reciever;
 
@@ -81,7 +70,6 @@ class _NewNotesPageState extends State<NewNotesPage> {
           clear();
         } else {
           widget.pageController.jumpToPage(0);
-          print('adsdadsadsadd');
         }
       }
       },
@@ -91,7 +79,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
           children: <Widget>[
             Expanded(
               child: TextField(
-                controller: _controller,
+                controller: widget.controller,
                 autofocus: true,
                 cursorColor: Color(0x000),
                 decoration: InputDecoration(
@@ -102,7 +90,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
               )
             ),
             Container(
-              child: _image == null
+              child: widget.image == null
                   ? IconButton(
                     icon: Icon(
                       Icons.add, 
@@ -118,7 +106,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
                         child: GestureDetector(
                           onTap: getImage,
                           child: Image.file(
-                            _image, 
+                            widget.image, 
                             width: IMAGE_WIDTH, 
                             height: IMAGE_HEIGHT
                           )
@@ -151,15 +139,15 @@ class _NewNotesPageState extends State<NewNotesPage> {
   
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image;
-    });
+    if (image == null) {
+      return;
+    }
+
+    widget.setImage(image);
   }
 
   void removeImage() {
-    setState(() {
-      _image = null;
-    });
+    widget.setImage(null);
   }
 }
 
