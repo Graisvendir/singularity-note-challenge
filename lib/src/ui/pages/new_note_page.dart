@@ -61,13 +61,15 @@ class _NewNotesPageState extends State<NewNotesPage> {
           ..dateCreated = DateTime.now()
           ..recievers = reciever;
 
+          clear();
+
           bool success = await Sender.sendEmail(bloc.getRecievers(), note);
 
           note.wasSentSuccessfully = success;
 
           mainBloc.put(note);
             
-          clear();
+          
         } else {
           widget.pageController.jumpToPage(0);
         }

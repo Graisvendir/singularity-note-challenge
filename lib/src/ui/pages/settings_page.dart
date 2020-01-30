@@ -39,6 +39,18 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               );
             }
+          ), InkWell(
+            onTap: () async {
+              
+            },
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Text(localize(SING_APP_TRY_NOW, context)),
+                  Text(localize(AVAILABLE, context)),
+                ]
+              ),
+            ),
           )
         ],
       )
