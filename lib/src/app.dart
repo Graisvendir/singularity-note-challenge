@@ -12,6 +12,8 @@ import 'package:note_project/src/ui/pages/settings_page.dart';
 import 'package:note_project/src/ui/pages/singularity_settings_page.dart';
 import 'package:provider/provider.dart';
 import 'blocks/notes_block.dart';
+import 'constants.dart';
+import 'constants.dart';
 import 'models/settings.dart';
 
 class App extends StatelessWidget {
@@ -28,7 +30,8 @@ class App extends StatelessWidget {
           theme: ThemeData(
             fontFamily: 'HelveticaNeue-Light',
             textTheme: TextTheme(
-              body1: TextStyle(fontSize: 18.0)
+              body1: TextStyle(fontSize: 18.0, color: Color(COLOR_GRAY)),
+              body2: TextStyle(fontSize: 12.0, color: Color(COLOR_LIGHT_GRAY))
             )
           ),
           darkTheme: ThemeData.dark(),
