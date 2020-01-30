@@ -3,6 +3,7 @@ import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/models/settings.dart';
 import 'package:provider/provider.dart';
 import 'package:note_project/src/resources/localisation.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -23,32 +24,51 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          OpenSingularitySettings(),
-          OpenEmailSettings(),
-          OpenEvernoteSettings(),
-          StreamBuilder(
-            stream: bloc.settings[Settings.theme],
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return Container();
-              
-                return CheckboxListTile(
-                title: Text(localize(LIGHT_THEME, context)),
-                value: snapshot.data,
-                onChanged: (bool value) {
-                  bloc.put(Settings.theme, value);
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                OpenSingularitySettings(),
+                OpenEmailSettings(),
+                OpenEvernoteSettings(),
+                StreamBuilder(
+                  stream: bloc.settings[Settings.theme],
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Container();
+                    
+                      return CheckboxListTile(
+                      title: Text(localize(LIGHT_THEME, context)),
+                      value: snapshot.data,
+                      onChanged: (bool value) {
+                        bloc.put(Settings.theme, value);
+                      },
+                    );
+                  }
+                )
+              ],
+            )
+          ), 
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
+            child: Material(
+              color: Colors.red,
+              child: InkWell(
+                onTap: () async {
+                  const url = 'https://play.google.com/store/apps/details?id=com.sibirix.singularityapp';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  }
                 },
-              );
-            }
-          ), InkWell(
-            onTap: () async {
-              
-            },
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  Text(localize(SING_APP_TRY_NOW, context)),
-                  Text(localize(AVAILABLE, context)),
-                ]
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(localize(SING_APP_TRY_NOW, context)),
+                      Text(localize(AVAILABLE, context)),
+                    ]
+                  ),
+                ),
               ),
             ),
           )
