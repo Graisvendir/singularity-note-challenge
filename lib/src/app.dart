@@ -13,6 +13,7 @@ import 'package:note_project/src/ui/pages/singularity_settings_page.dart';
 import 'package:provider/provider.dart';
 import 'blocks/notes_block.dart';
 import 'models/settings.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class App extends StatelessWidget {
   @override
@@ -25,6 +26,11 @@ class App extends StatelessWidget {
         if (!snapshot.hasData) return Container();
 
         return MaterialApp(
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           theme: ThemeData(
             fontFamily: 'HelveticaNeue-Light',
             textTheme: TextTheme(
@@ -41,8 +47,8 @@ class App extends StatelessWidget {
             SINGULARITY_SETTINGS_PATH: (context) => SingularitySettingsPage()
           },
           supportedLocales: [
-            const Locale('en', 'US'), // English
-            const Locale('ru', 'RU'), // Russian
+            const Locale('en'), // English
+            const Locale('ru'), // Russian
           ],
         );
       }
@@ -81,7 +87,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {   
     return MultiProvider(
       providers: [
         Provider.value(value: bloc),

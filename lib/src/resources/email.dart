@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:mailer/mailer.dart';
+import 'package:http/http.dart' as http;
 import 'package:mailer/smtp_server.dart';
 import 'package:note_project/src/models/note_model.dart';
 
@@ -59,6 +61,22 @@ class Sender {
 
   static Future<bool> sendEmail(List<String> recipients, NoteModel noteToSend) async{
     Message message = createEmail(recipients, noteToSend.text, noteToSend.imgPath);
+    final auth = base64Encode(Utf8Encoder().convert('fogelvogel1337@gmail.com:3ced8c6d-adbf-4ee1-a48d-b12f07514334'));
+    
+    final response = await http.post(
+      'https://api.singularity-app.com/task', 
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Basic $auth'
+      },
+      body: jsonEncode({
+        'title': 'test',
+        'note': 'test'
+      })
+    );
+    final success = response.statusCode == HttpStatus.created;
+    return false;
+    
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
