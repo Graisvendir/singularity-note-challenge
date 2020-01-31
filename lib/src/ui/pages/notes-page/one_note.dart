@@ -70,7 +70,7 @@ class OneNoteState extends State<OneNote> {
   String synchronisationInfo(DateTime date, Reciever accounts) {
     String row = '';
 
-    var formatter = new DateFormat('d MMMM y');
+    var formatter = new DateFormat('d MMMM y', Localizations.localeOf(context).languageCode);
     row = formatter.format(date);
 
     if (accounts.email) {
