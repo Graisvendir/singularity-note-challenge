@@ -1,5 +1,8 @@
 const EMAIL = 'email';
+const EMAIL_CAPTION = 'Email';
 const EVERNOTE = 'evernote';
+const EVERNOTE_CAPTION = 'Email';
+const SINGULARITY_APP_CAPTION = 'Email';
 const SING_LOGIN = 'singLogin';
 const SING_PASS = 'singPass';
 const ALWAYS_SYNC_EMAIL = 'alwaysSyncEmail';
@@ -10,6 +13,8 @@ const IMAGE_WIDTH = 50.0;
 const IMAGE_HEIGHT = 50.0;
 const COLOR_GRAY = 0xFF2B2C37;
 const COLOR_WHITE = 0xFFFDFDFD;
+const COLOR_LIGHT_GRAY = 0xFF75899B;
 const EMAIL_SETTINGS_PATH = '/emailSettings';
 const EVERNOTE_SETTINGS_PATH = '/evernoteSettings';
 const SINGULARITY_SETTINGS_PATH = '/singularitySettings';
+const SVG_ONE_FINGER = 'assets/one-finger.svg';

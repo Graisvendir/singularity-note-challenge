@@ -1,15 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/constants.dart';
 import 'package:note_project/src/models/note_model.dart';
-import 'package:note_project/src/models/settings.dart';
 import 'package:note_project/src/resources/email.dart';
 import 'package:uuid/uuid.dart';
 import '../../blocks/notes_block.dart';
 import 'package:provider/provider.dart';
+
+import '../../constants.dart';
 
 class NewNotesPage extends StatefulWidget {
   final PageController pageController;
@@ -46,34 +48,34 @@ class _NewNotesPageState extends State<NewNotesPage> {
       },
       onVerticalDragUpdate: (DragUpdateDetails dragUpdateDetails) {
         //место для показа пальца вверх или вниз
-       updateDrag = dragUpdateDetails.globalPosition.dy;
+        updateDrag = dragUpdateDetails.globalPosition.dy;
       },
-       onVerticalDragEnd: (DragEndDetails dragEndDetails) async {
-      if (startDrag - updateDrag < -40) {
-        clear();
-      } else if (startDrag - updateDrag > 40) {
-        Reciever reciever = bloc.getRecieversBool();
-        if(reciever.email == true || reciever.evernote == true || reciever.singularityApp == true) {
-          final NoteModel note = NoteModel()
-          ..text = widget.controller.value.text
-          ..key = Uuid().v4()
-          ..imgPath = widget.image?.path
-          ..dateCreated = DateTime.now()
-          ..recievers = reciever;
-
+      onVerticalDragEnd: (DragEndDetails dragEndDetails) async {
+        if (startDrag - updateDrag < -40) {
           clear();
+        } else if (startDrag - updateDrag > 40) {
+          Reciever reciever = bloc.getRecieversBool();
+          if(reciever.email == true || reciever.evernote == true || reciever.singularityApp == true) {
+            final NoteModel note = NoteModel()
+            ..text = widget.controller.value.text
+            ..key = Uuid().v4()
+            ..imgPath = widget.image?.path
+            ..dateCreated = DateTime.now()
+            ..recievers = reciever;
 
-          bool success = await Sender.sendEmail(bloc.getRecievers(), note);
+            clear();
 
-          note.wasSentSuccessfully = success;
+            bool success = await Sender.sendEmail(bloc.getRecievers(), note);
 
-          mainBloc.put(note);
+            note.wasSentSuccessfully = success;
+
+            mainBloc.put(note);
+              
             
-          
-        } else {
-          widget.pageController.jumpToPage(0);
+          } else {
+            widget.pageController.jumpToPage(0);
+          }
         }
-      }
       },
       child: 
       Container(
