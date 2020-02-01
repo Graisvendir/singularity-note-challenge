@@ -65,7 +65,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
 
             clear();
 
-            bool success = await Sender.sendEmail(bloc.getRecievers(), note);
+            bool success = await Sender.sendEveryWhere(bloc.getRecievers(), note, bloc.getAuth());
 
             note.wasSentSuccessfully = success;
 

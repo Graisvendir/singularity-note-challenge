@@ -7,6 +7,7 @@ import 'package:mailer/mailer.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailer/smtp_server.dart';
 import 'package:note_project/src/models/note_model.dart';
+import 'package:note_project/src/models/settings.dart';
 
 class Sender {
   static final username = 'noteproject@yandex.ru';
@@ -43,24 +44,24 @@ class Sender {
     return subj;
   }
 
-  static Future<bool> sendEmail(List<String> recipients, NoteModel noteToSend) async{
-    Message message = createEmail(recipients, noteToSend.text, noteToSend.imgPath);
-    final auth = base64Encode(Utf8Encoder().convert('fogelvogel1337@gmail.com:3ced8c6d-adbf-4ee1-a48d-b12f07514334'));
-    
-    // final response = await http.post(
-    //   'https://api.singularity-app.com/task', 
-    //   headers: {
-    //     HttpHeaders.contentTypeHeader: 'application/json',
-    //     HttpHeaders.authorizationHeader: 'Basic $auth'
-    //   },
-    //   body: jsonEncode({
-    //     'title': 'test',
-    //     'note': 'test'
-    //   })
-    // );
-    // final success = response.statusCode == HttpStatus.created;
-    // return false;
-    
+  static Future<bool> sendSingularity(Auth auth) async{
+    final response = await http.post(
+      'https://api.singularity-app.com/task', 
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Basic $auth'
+      },
+      body: jsonEncode({
+        'title': 'test',
+        'note': 'test'
+      })
+    );
+    final success = response.statusCode == HttpStatus.created;
+    print('sing $success');
+    return success;
+  }
+
+  static Future<bool> sendEmail(Message message) async{
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
@@ -69,5 +70,16 @@ class Sender {
       print('Message not sent.');
       return false;
     }
+  
+  }
+
+  static Future<bool> sendEveryWhere(List<String> recipients, NoteModel noteToSend, Auth auth) async{
+    Message message = createEmail(recipients, noteToSend.text, noteToSend.imgPath);     
+    final succesEmail = await sendEmail(message);
+    if (succesEmail) {
+      final successSing = await sendSingularity(auth);
+      return successSing;
+    }
+    return false;
   }
 }
