@@ -15,3 +15,8 @@ final defaultSettings = Map<Settings, dynamic>.unmodifiable({
   Settings.alwaysSyncEvernote: true,
   Settings.alwaysSyncSIngularity: true,
 });
+
+enum Auth {
+  login,
+  token
+}

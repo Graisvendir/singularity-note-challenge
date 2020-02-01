@@ -8,22 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:mailer/smtp_server.dart';
 import 'package:note_project/src/models/note_model.dart';
 
-void sendEmail() async {
-    final username = 'noteproject@yandex.ru';
-   final password = 'G_b-2C!m4ec@nTj';
-   final smtpServer = SmtpServer('smtp.yandex.ru', username: username, password: password, port: 465, ssl: true);
-  final message = Message()
-    ..from = Address(username, 'Singularity Note')
-    ..recipients.add('fogelvogel1337@gmail.com')
-    ..ccRecipients.addAll(['fogelvogel1337@gmail.com', 'fogelvogel1337@gmail.com'])
-    ..bccRecipients.add(Address('fogelvogel1337@gmail.com'))
-    ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}'
-    ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-    ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
-
- 
-}
-
 class Sender {
   static final username = 'noteproject@yandex.ru';
   static final password = 'G_b-2C!m4ec@nTj';
@@ -63,29 +47,26 @@ class Sender {
     Message message = createEmail(recipients, noteToSend.text, noteToSend.imgPath);
     final auth = base64Encode(Utf8Encoder().convert('fogelvogel1337@gmail.com:3ced8c6d-adbf-4ee1-a48d-b12f07514334'));
     
-    final response = await http.post(
-      'https://api.singularity-app.com/task', 
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.authorizationHeader: 'Basic $auth'
-      },
-      body: jsonEncode({
-        'title': 'test',
-        'note': 'test'
-      })
-    );
-    final success = response.statusCode == HttpStatus.created;
-    return false;
+    // final response = await http.post(
+    //   'https://api.singularity-app.com/task', 
+    //   headers: {
+    //     HttpHeaders.contentTypeHeader: 'application/json',
+    //     HttpHeaders.authorizationHeader: 'Basic $auth'
+    //   },
+    //   body: jsonEncode({
+    //     'title': 'test',
+    //     'note': 'test'
+    //   })
+    // );
+    // final success = response.statusCode == HttpStatus.created;
+    // return false;
     
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
       return true;
-    } on MailerException catch (e) {
+    } catch (_) {
       print('Message not sent.');
-      for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
-      }
       return false;
     }
   }
