@@ -43,20 +43,23 @@ class Sender {
   // отправить в сингулярность
   static Future<bool> sendSingularity(Auth auth, String text, String subject) async{
     final authHeader = auth.authHeader;
-    print(auth.token);
-    final response = await http.post(
-      'https://api.singularity-app.com/task', 
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.authorizationHeader: 'Basic $authHeader'
-      },
-      body: jsonEncode({
-        'title': subject,
-        'note': text
-      })
-    );
-    final success = response.statusCode == HttpStatus.created;
+    try {
+      final response = await http.post(
+        'https://api.singularity-app.com/task', 
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Basic $authHeader'
+        },
+        body: jsonEncode({
+          'title': subject,
+          'note': text
+        })
+      );
+      final success = response.statusCode == HttpStatus.created;
     return success;
+    } on Exception {
+      return false;
+    }
   }
   // отправить на имейл (и на почту evernote)
   static Future<bool> sendEmail(Message message) async{
