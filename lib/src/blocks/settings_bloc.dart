@@ -42,6 +42,11 @@ class SettingsBloc {
     return recievers;
   }
 
+  Auth getAuth() {
+    final auth = Auth(settings[Settings.singLogin].value, settings[Settings.singPass].value);
+    return auth;
+  }
+
   Reciever getRecieversBool() {
     final email = settings[Settings.email].value;
     final evernote = settings[Settings.evernote].value;

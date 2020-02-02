@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 enum Settings {
   email,
   evernote,
@@ -16,7 +18,11 @@ final defaultSettings = Map<Settings, dynamic>.unmodifiable({
   Settings.alwaysSyncSIngularity: true,
 });
 
-enum Auth {
-  login,
-  token
+class Auth {
+  final String login;
+  final String token;
+
+  Auth(this.login, this.token);
+
+  String get authHeader => base64Encode(Utf8Encoder().convert('$login:$token'));
 }
