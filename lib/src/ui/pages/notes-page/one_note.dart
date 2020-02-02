@@ -75,9 +75,7 @@ class OneNoteState extends State<OneNote> {
     
     final auth = data.recievers.singularityApp ? settingsBloc.getAuth() : Auth('', ''); 
     bool success = await Sender.sendEveryWhere(recipients, data, auth);
-    print('попытка отправки');
     if (success) {
-      print('synchronize note');
       data.wasSentSuccessfully = true;
       bloc.put(data);
     }

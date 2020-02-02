@@ -44,42 +44,41 @@ class Sender {
     return subj;
   }
 
-  static Future<bool> sendSingularity(Auth auth) async{
+  static Future<bool> sendSingularity(Auth auth, String text, String subject) async{
+    final authHeader = auth.authHeader;
     final response = await http.post(
       'https://api.singularity-app.com/task', 
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.authorizationHeader: 'Basic $auth'
+        HttpHeaders.authorizationHeader: 'Basic $authHeader'
       },
       body: jsonEncode({
-        'title': 'test',
-        'note': 'test'
+        'title': subject,
+        'note': text
       })
     );
     final success = response.statusCode == HttpStatus.created;
-    print('sing $success');
     return success;
   }
 
   static Future<bool> sendEmail(Message message) async{
     try {
       final sendReport = await send(message, smtpServer);
-      print('Message sent: ' + sendReport.toString());
+      //print('Message sent: ' + sendReport.toString());
       return true;
     } catch (_) {
-      print('Message not sent.');
+      //print('Message not sent.');
       return false;
     }
   
   }
 
   static Future<bool> sendEveryWhere(List<String> recipients, NoteModel noteToSend, Auth auth) async{
-    Message message = createEmail(recipients, noteToSend.text, noteToSend.imgPath);     
-    final succesEmail = await sendEmail(message);
-    if (succesEmail) {
-      final successSing = await sendSingularity(auth);
-      return successSing;
-    }
-    return false;
+    Message message = createEmail(recipients, noteToSend.text, noteToSend.imgPath); 
+    bool succesEmail = true;   
+    if (recipients.isNotEmpty) succesEmail = await sendEmail(message);
+    
+    final successSing = await sendSingularity(auth, message.text, message.subject);
+    return successSing && succesEmail;
   }
 }

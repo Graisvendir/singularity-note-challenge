@@ -23,8 +23,7 @@ const NO_NOTES = ['There are no notes yet', 'У вас пока нет заме�
 
 String localize(List<String> textConstant, BuildContext context) {
   Locale myLocale = Localizations.localeOf(context);
-  print(myLocale.languageCode);
-  print(myLocale.countryCode);
+
   if (myLocale.languageCode == 'en') {
     return textConstant.first;
   } else {

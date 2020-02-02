@@ -37,8 +37,6 @@ class _NewNotesPageState extends State<NewNotesPage> {
     final bloc = Provider.of<SettingsBloc>(context);
     final mainBloc = Provider.of<MainBloc>(context);
     
-    print(bloc.getRecievers());
-
     double startDrag;
     double updateDrag;
     return  GestureDetector(
