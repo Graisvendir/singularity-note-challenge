@@ -15,7 +15,6 @@ class SaveButton extends StatelessWidget {
         Navigator.pop(context);
       },
       child: Text(localize(SAVE, context)),
-      
     );
   }
 }

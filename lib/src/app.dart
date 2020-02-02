@@ -13,7 +13,6 @@ import 'package:note_project/src/ui/pages/singularity_settings_page.dart';
 import 'package:provider/provider.dart';
 import 'blocks/notes_block.dart';
 import 'constants.dart';
-import 'constants.dart';
 import 'models/settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -23,39 +22,37 @@ class App extends StatelessWidget {
     final bloc = Provider.of<SettingsBloc>(context);
 
     return StreamBuilder(
-      stream: bloc.settings[Settings.theme],
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return Container();
+        stream: bloc.settings[Settings.theme],
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Container();
 
-        return MaterialApp(
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          theme: ThemeData(
-            fontFamily: 'HelveticaNeue-Light',
-            textTheme: TextTheme(
-              body1: TextStyle(fontSize: 18.0, color: Color(COLOR_GRAY)),
-              body2: TextStyle(fontSize: 12.0, color: Color(COLOR_LIGHT_GRAY))
-            )
-          ),
-          darkTheme: ThemeData.dark(),
-          themeMode: snapshot.data ? ThemeMode.light : ThemeMode.dark,
-          initialRoute: '/',
-          routes: {
-            '/': (context) => MainPage(),
-            EMAIL_SETTINGS_PATH: (context) => EmailSettingsPage(),
-            EVERNOTE_SETTINGS_PATH: (context) => EvernoteSettingsPage(),
-            SINGULARITY_SETTINGS_PATH: (context) => SingularitySettingsPage()
-          },
-          supportedLocales: [
-            const Locale('en'), // English
-            const Locale('ru'), // Russian
-          ],
-        );
-      }
-    );
+          return MaterialApp(
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            theme: ThemeData(
+                fontFamily: 'HelveticaNeue-Light',
+                textTheme: TextTheme(
+                    body1: TextStyle(fontSize: 18.0, color: Color(COLOR_GRAY)),
+                    body2: TextStyle(
+                        fontSize: 12.0, color: Color(COLOR_LIGHT_GRAY)))),
+            darkTheme: ThemeData.dark(),
+            themeMode: snapshot.data ? ThemeMode.light : ThemeMode.dark,
+            initialRoute: '/',
+            routes: {
+              '/': (context) => MainPage(),
+              EMAIL_SETTINGS_PATH: (context) => EmailSettingsPage(),
+              EVERNOTE_SETTINGS_PATH: (context) => EvernoteSettingsPage(),
+              SINGULARITY_SETTINGS_PATH: (context) => SingularitySettingsPage()
+            },
+            supportedLocales: [
+              const Locale('en'), // English
+              const Locale('ru'), // Russian
+            ],
+          );
+        });
   }
 }
 
@@ -75,7 +72,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     pageController = PageController(initialPage: 1);
     textController = TextEditingController();
-  
+
     final repository = Provider.of<Repository>(context, listen: false);
     bloc = MainBloc(repository);
     bloc.fetchAllNotes();
@@ -90,32 +87,30 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
-  Widget build(BuildContext context) {   
+  Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         Provider.value(value: bloc),
       ],
       child: Scaffold(
-        body: SafeArea(
-          child: PageView(
-            controller: pageController,
-            children: <Widget>[
-              SettingsPage(),
-              NewNotesPage(
-                pageController: pageController,
-                controller: textController,
-                setImage: (f) {
-                  setState(() {
-                    image = f;
-                  });
-                },
-                image: image,
-              ),
-              NotesPage(),
-            ],
-          )
-        )
-      ),
+          body: SafeArea(
+              child: PageView(
+        controller: pageController,
+        children: <Widget>[
+          SettingsPage(),
+          NewNotesPage(
+            pageController: pageController,
+            controller: textController,
+            setImage: (f) {
+              setState(() {
+                image = f;
+              });
+            },
+            image: image,
+          ),
+          NotesPage(),
+        ],
+      ))),
     );
   }
 }

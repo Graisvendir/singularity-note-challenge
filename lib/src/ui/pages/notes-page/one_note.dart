@@ -5,10 +5,9 @@ import 'package:note_project/src/models/note_model.dart';
 import 'package:note_project/src/models/settings.dart';
 import 'package:note_project/src/resources/email.dart';
 import 'package:provider/provider.dart';
+import 'package:note_project/src/blocks/settings_bloc.dart';
 import '../../../constants.dart';
 import '../../../models/note_model.dart';
-import 'package:note_project/src/blocks/settings_bloc.dart';
-
 
 class OneNote extends StatefulWidget {
 
