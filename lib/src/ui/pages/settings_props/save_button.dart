@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_project/src/resources/localisation.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SaveButton extends StatelessWidget {
   final void Function() saveCallback;
@@ -12,7 +13,6 @@ class SaveButton extends StatelessWidget {
     return FlatButton(
       onPressed: () {
         saveCallback();
-        Navigator.pop(context);
       },
       child: Text(localize(SAVE, context)),
       

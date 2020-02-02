@@ -3,7 +3,6 @@ import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/models/settings.dart';
 import 'package:provider/provider.dart';
 import 'package:note_project/src/resources/localisation.dart';
-import 'package:shake/shake.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {

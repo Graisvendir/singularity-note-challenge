@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_project/src/models/settings.dart';
-import 'package:note_project/src/resources/repository.dart';
+import 'package:note_project/src/resources/validation.dart';
 import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,8 @@ class SingularitySettingsPage extends StatefulWidget {
 }
 
 class _SingularitySettingsPageState extends State<SingularitySettingsPage> {
-
+  bool _autoValidate = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool checkValue = false;
   TextEditingController singularityLoginController;
   TextEditingController singularityPassController;
@@ -30,6 +31,12 @@ class _SingularitySettingsPageState extends State<SingularitySettingsPage> {
       singularityLoginController.text = bloc.settings[Settings.singLogin].value;
       singularityPassController.text = bloc.settings[Settings.singPass].value;
     });
+  }
+  String validateField(String value) {
+    return validateEmail(value, context);
+  }
+  String validateTokenField(String value) {
+    return validateToken(value, context);
   }
 
   @override
@@ -47,43 +54,48 @@ class _SingularitySettingsPageState extends State<SingularitySettingsPage> {
       child: Scaffold(
         body: ListView(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text(localize(SING_SETTINGS, context)),
-                //логин
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+            Form(
+              key: _formKey,
+              autovalidate: _autoValidate,
+              child: Column(
+                children: <Widget>[
+                  Text(localize(SING_SETTINGS, context)),
+                  //логин
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    validator: validateField,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: singularityLoginController,
                   ),
-                  controller: singularityLoginController,
-                ),
-                // пароль пока не делаем, не понятно что будет
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  controller: singularityPassController,
-                ),  
-                StreamBuilder(
-                  stream: bloc.settings[Settings.alwaysSyncSIngularity],
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Container();
-                    return CheckboxListTile(
-                      title: Text(localize(ALWAYS_SYNC, context)),
-                      value: snapshot.data,
-                      onChanged: (bool value) {
-                          bloc.put(Settings.alwaysSyncSIngularity, value);
-                      },
-                    );
-                  }
-                )
-              ],
+                  // токен
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    validator: validateTokenField,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: singularityPassController,
+                  ),  
+                  StreamBuilder(
+                    stream: bloc.settings[Settings.alwaysSyncSIngularity],
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) return Container();
+                      return CheckboxListTile(
+                        title: Text(localize(ALWAYS_SYNC, context)),
+                        value: snapshot.data,
+                        onChanged: (bool value) {
+                            bloc.put(Settings.alwaysSyncSIngularity, value);
+                        },
+                      );
+                    }
+                  )
+                ],
+              ),
             ),
             SaveButton(
-              saveCallback: () {
-                bloc.put(Settings.singLogin, singularityLoginController.value.text);
-                bloc.put(Settings.singPass, singularityPassController.value.text);
-              },
+              saveCallback: _validateInputs
             ),
             DeleteSync(
               deleteCallback: () {
@@ -98,5 +110,17 @@ class _SingularitySettingsPageState extends State<SingularitySettingsPage> {
       ),
     );
     return provider;
+  }
+  Future<void> _validateInputs() async {
+    if (_formKey.currentState.validate()) {
+      final bloc = Provider.of<SettingsBloc>(context, listen: false);
+      await bloc.put(Settings.singLogin, singularityLoginController.value.text);
+      await bloc.put(Settings.singPass, singularityPassController.value.text);
+      Navigator.pop(context);
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
   }
 }

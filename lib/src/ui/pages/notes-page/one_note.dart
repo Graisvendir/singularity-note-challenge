@@ -73,7 +73,6 @@ class OneNoteState extends State<OneNote> {
   }
 
   void synchronize(MainBloc bloc) async{
-    print(data.wasSentSuccessfully);
     List<String> recipients = getRecipients(data.recievers);
     
     final auth = data.recievers.singularityApp ? settingsBloc.getAuth() : Auth('', ''); 

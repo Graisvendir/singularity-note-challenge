@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_project/src/models/settings.dart';
 import 'package:note_project/src/resources/repository.dart';
+import 'package:note_project/src/resources/validation.dart';
 import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,8 @@ class EvernoteSettingsPage extends StatefulWidget {
 }
 
 class _EvernoteSettingsPageState extends State<EvernoteSettingsPage> {
+  bool _autoValidate = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool checkValue = false;
   TextEditingController evernoteController;
 
@@ -26,6 +29,9 @@ class _EvernoteSettingsPageState extends State<EvernoteSettingsPage> {
     bloc.fetchSettings().then((value) {
       evernoteController.text = bloc.settings[Settings.evernote].value;
     });
+  }
+  String validateField(String value) {
+    return validateEmail(value, context);
   }
 
    @override
@@ -42,34 +48,38 @@ class _EvernoteSettingsPageState extends State<EvernoteSettingsPage> {
       child: Scaffold(
         body: ListView(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text(localize(EVERNOTE_SETTINGS, context)),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  controller: evernoteController,
-                ), 
-                StreamBuilder(
-                  stream: bloc.settings[Settings.alwaysSyncEvernote],
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Container();
-                    return CheckboxListTile(
-                      title: Text(localize(ALWAYS_SYNC, context)),
-                      value: snapshot.data,
-                      onChanged: (bool value) {
-                        bloc.put(Settings.alwaysSyncEvernote, value);
-                      },
-                    );
-                  }
-                )
-              ],
+            Form(
+              key: _formKey,
+              autovalidate: _autoValidate,
+              child: Column(
+                children: <Widget>[
+                  Text(localize(EVERNOTE_SETTINGS, context)),
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    validator: validateField,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: evernoteController,
+                  ), 
+                  StreamBuilder(
+                    stream: bloc.settings[Settings.alwaysSyncEvernote],
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) return Container();
+                      return CheckboxListTile(
+                        title: Text(localize(ALWAYS_SYNC, context)),
+                        value: snapshot.data,
+                        onChanged: (bool value) {
+                          bloc.put(Settings.alwaysSyncEvernote, value);
+                        },
+                      );
+                    }
+                  )
+                ],
+              ),
             ),
             SaveButton(
-              saveCallback: () {
-                bloc.put(Settings.evernote, evernoteController.value.text);
-              },
+              saveCallback: _validateInputs
             ),
             DeleteSync(
               deleteCallback: () {
@@ -82,5 +92,15 @@ class _EvernoteSettingsPageState extends State<EvernoteSettingsPage> {
       ),
     );
     return provider;
+  }
+  Future<void> _validateInputs() async {
+    if (_formKey.currentState.validate()) {
+      await Provider.of<SettingsBloc>(context, listen: false).put(Settings.evernote, evernoteController.value.text);
+      Navigator.pop(context);
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
   }
 }
