@@ -71,11 +71,15 @@ class _NewNotesPageState extends State<NewNotesPage> {
 
             clear();
 
+            note.wasSentSuccessfully = false;
+            mainBloc.put(note);
+
             bool success = await Sender.sendEveryWhere(bloc.getRecievers(), note, bloc.getAuth());
 
-            note.wasSentSuccessfully = success;
-
-            mainBloc.put(note);
+            if (success) {
+              note.wasSentSuccessfully = success;
+              mainBloc.put(note);
+            }
               
             
           } else {

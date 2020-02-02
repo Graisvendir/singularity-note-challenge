@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:note_project/src/models/settings.dart';
-import 'package:note_project/src/resources/repository.dart';
 import 'package:note_project/src/resources/validation.dart';
 import 'package:note_project/src/ui/pages/settings_props/delete_sync.dart';
 import 'package:note_project/src/ui/pages/settings_props/save_button.dart';
