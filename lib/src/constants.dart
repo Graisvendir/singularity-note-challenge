@@ -18,3 +18,6 @@ const EMAIL_SETTINGS_PATH = '/emailSettings';
 const EVERNOTE_SETTINGS_PATH = '/evernoteSettings';
 const SINGULARITY_SETTINGS_PATH = '/singularitySettings';
 const SVG_ONE_FINGER = 'assets/one-finger.svg';
+// разные ссылки для android и ios
+const BANNER_ANDROID = 'https://play.google.com/store/apps/details?id=com.sibirix.singularityapp';
+const BANNER_IOS = 'https://apps.apple.com/app/apple-store/id1477784588';

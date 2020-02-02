@@ -13,7 +13,6 @@ import 'package:note_project/src/ui/pages/singularity_settings_page.dart';
 import 'package:provider/provider.dart';
 import 'blocks/notes_block.dart';
 import 'constants.dart';
-import 'constants.dart';
 import 'models/settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -34,13 +33,16 @@ class App extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           theme: ThemeData(
+            highlightColor: Color(0xff2b2c37),
             fontFamily: 'HelveticaNeue-Light',
             textTheme: TextTheme(
-              body1: TextStyle(fontSize: 18.0, color: Color(COLOR_GRAY)),
+              body1: TextStyle(fontSize: 14.0, color: Color(COLOR_GRAY)),
               body2: TextStyle(fontSize: 12.0, color: Color(COLOR_LIGHT_GRAY))
             )
           ),
-          darkTheme: ThemeData.dark(),
+          darkTheme: ThemeData.dark().copyWith(
+            highlightColor: Color(0xff75899b)
+          ),
           themeMode: snapshot.data ? ThemeMode.light : ThemeMode.dark,
           initialRoute: '/',
           routes: {

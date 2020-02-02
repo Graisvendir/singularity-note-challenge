@@ -43,6 +43,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
   Widget build(BuildContext context) {
     final bloc = Provider.of<SettingsBloc>(context);
     final mainBloc = Provider.of<MainBloc>(context);
+    final theme = Theme.of(context);
     
     double startDrag;
     double updateDrag;
@@ -95,7 +96,6 @@ class _NewNotesPageState extends State<NewNotesPage> {
                 controller: widget.controller,
                 autofocus: true,
                 focusNode: fn,
-                cursorColor: Color(0x000),
                 decoration: InputDecoration(
                   border: InputBorder.none
                 ),
@@ -110,7 +110,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
                     iconSize: 50,
                     icon: Icon(
                       Icons.add, 
-                      color: Color(COLOR_GRAY)
+                      color: theme.textTheme.body1.color
                     ),
                     onPressed: () async {
                     await showChoiceDialog(context);
