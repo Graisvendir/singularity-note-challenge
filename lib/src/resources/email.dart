@@ -64,10 +64,10 @@ class Sender {
   static Future<bool> sendEmail(Message message) async{
     try {
       final sendReport = await send(message, smtpServer);
-      //print('Message sent: ' + sendReport.toString());
+      print('Message sent: ' + sendReport.toString());
       return true;
     } catch (_) {
-      //print('Message not sent.');
+      print('Message not sent.');
       return false;
     }
   
@@ -76,9 +76,10 @@ class Sender {
   static Future<bool> sendEveryWhere(List<String> recipients, NoteModel noteToSend, Auth auth) async{
     Message message = createEmail(recipients, noteToSend.text, noteToSend.imgPath); 
     bool succesEmail = true;   
+    bool successSing = true;   
     if (recipients.isNotEmpty) succesEmail = await sendEmail(message);
-    
-    final successSing = await sendSingularity(auth, message.text, message.subject);
+    print(auth.token);
+    if(auth.token != '' && auth.token != null) successSing = await sendSingularity(auth, message.text, message.subject);
     return successSing && succesEmail;
   }
 }

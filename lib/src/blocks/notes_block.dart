@@ -19,7 +19,16 @@ class MainBloc {
 
   Future<void> put(NoteModel note) async {
     await _repository.notesProvider.put(note);
-    _allNotes.add(List<NoteModel>.unmodifiable([..._allNotes.value, note]));
+    int findInList = _allNotes.value.indexWhere((n) => note.key == n.key);
+    final newValue = [..._allNotes.value];
+
+    if (findInList == -1) {
+      newValue.add(note);
+    } else {
+      newValue.replaceRange(findInList, findInList + 1, [note]);
+    }
+    
+    _allNotes.add(List<NoteModel>.unmodifiable(newValue));
   }
 
   Future<void> dispose() async {
