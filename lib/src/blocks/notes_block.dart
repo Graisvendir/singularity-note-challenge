@@ -9,7 +9,8 @@ class MainBloc {
   final Repository _repository;
   final _allNotes = BehaviorSubject<List<NoteModel>>();
 
-  Observable<List<NoteModel>> get allNotes => _allNotes.stream;
+  Observable<List<NoteModel>> get allNotesSorted => 
+    _allNotes.stream.map((d) => [...d]..sort((a,b) => -a.dateCreated.compareTo(b.dateCreated)));
 
   Future<void> fetchAllNotes() async {
     final notes = await _repository.fetchAllNotes();
@@ -18,7 +19,7 @@ class MainBloc {
 
   Future<void> put(NoteModel note) async {
     await _repository.notesProvider.put(note);
-    _allNotes.add([..._allNotes.value, note]);
+    _allNotes.add(List<NoteModel>.unmodifiable([..._allNotes.value, note]));
   }
 
   Future<void> dispose() async {

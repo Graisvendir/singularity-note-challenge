@@ -27,9 +27,17 @@ class NewNotesPage extends StatefulWidget {
 }
 
 class _NewNotesPageState extends State<NewNotesPage> {
+  FocusNode fn = FocusNode();
+
   void clear() {
     removeImage();
     widget.controller.clear();
+  }
+
+  @override
+  void dispose() {
+    fn.dispose();
+    super.dispose();
   }
 
   @override
@@ -85,6 +93,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
               child: TextField(
                 controller: widget.controller,
                 autofocus: true,
+                focusNode: fn,
                 cursorColor: Color(0x000),
                 decoration: InputDecoration(
                   border: InputBorder.none
@@ -96,9 +105,10 @@ class _NewNotesPageState extends State<NewNotesPage> {
             Container(
               child: widget.image == null
                   ? IconButton(
+                    alignment: Alignment.center,
+                    iconSize: 50,
                     icon: Icon(
                       Icons.add, 
-                      size: 50.0, 
                       color: Color(COLOR_GRAY)
                     ),
                     onPressed: getImage,
@@ -119,14 +129,14 @@ class _NewNotesPageState extends State<NewNotesPage> {
                       Positioned(
                         top: -14.0,
                         left: -14.0,
-                        child: GestureDetector(
+                        child: InkWell(
                           onTap: removeImage,
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: CircleAvatar(
-                              radius: 14.0,
-                              backgroundColor: Color(COLOR_GRAY),
-                              child: Icon(Icons.close, color: Color(COLOR_WHITE)),
+                          child: Container(
+                            padding: EdgeInsets.all(4),
+                            child: Icon(Icons.close, color: Color(COLOR_WHITE)),
+                            decoration: BoxDecoration(
+                              color: Color(COLOR_GRAY),
+                              borderRadius: BorderRadius.all(Radius.circular(30))
                             ),
                           ),
                         ),
@@ -142,6 +152,7 @@ class _NewNotesPageState extends State<NewNotesPage> {
   }
   
   Future getImage() async {
+    fn.unfocus();
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image == null) {
       return;

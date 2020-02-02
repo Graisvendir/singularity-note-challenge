@@ -17,7 +17,7 @@ class NotesPage extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: StreamBuilder<List<NoteModel>>(
-            stream: bloc.allNotes,
+            stream: bloc.allNotesSorted,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Center(child: CircularProgressIndicator());

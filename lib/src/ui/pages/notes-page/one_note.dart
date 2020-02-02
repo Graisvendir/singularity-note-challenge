@@ -55,9 +55,11 @@ class OneNoteState extends State<OneNote> {
                       child: Icon(Icons.update, size: 20.0),
                       padding: EdgeInsets.only(right: 20.0),
                     ),
-                    Text(
-                      this.synchronisationInfo(this.data.dateCreated, this.data.recievers),
-                      style: Theme.of(context).textTheme.body2,  
+                    Expanded(
+                      child: Text(
+                        this.synchronisationInfo(this.data.dateCreated, this.data.recievers),
+                        style: Theme.of(context).textTheme.body2,  
+                      ),
                     )
                   ],
                 ),
