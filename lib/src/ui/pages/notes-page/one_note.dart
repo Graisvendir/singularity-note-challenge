@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_project/src/blocks/notes_block.dart';
 import 'package:note_project/src/models/note_model.dart';
+import 'package:note_project/src/models/settings.dart';
 import 'package:note_project/src/resources/email.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
@@ -71,11 +72,10 @@ class OneNoteState extends State<OneNote> {
 
   void synchronize(MainBloc bloc) async{
     List<String> recipients = getRecipients(data.recievers);
-     
-    bool success = await Sender.sendEmail(recipients, data);
-    print('попытка отправки');
+    
+    final auth = data.recievers.singularityApp ? settingsBloc.getAuth() : Auth('', ''); 
+    bool success = await Sender.sendEveryWhere(recipients, data, auth);
     if (success) {
-      print('synchronize note');
       data.wasSentSuccessfully = true;
       bloc.put(data);
     }
