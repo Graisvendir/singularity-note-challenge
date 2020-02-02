@@ -1,7 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:note_project/src/resources/localisation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/constants.dart';
@@ -113,14 +112,18 @@ class _NewNotesPageState extends State<NewNotesPage> {
                       Icons.add, 
                       color: Color(COLOR_GRAY)
                     ),
-                    onPressed: getImage,
+                    onPressed: () async {
+                    await showChoiceDialog(context);
+                    },
                   )
                   : Stack(
                     overflow: Overflow.visible,
                     children: [
                       Container(
                         child: GestureDetector(
-                          onTap: getImage,
+                          onTap: () async {
+                            await showChoiceDialog(context);
+                          },
                           child: Image.file(
                             widget.image, 
                             width: IMAGE_WIDTH, 
@@ -161,6 +164,45 @@ class _NewNotesPageState extends State<NewNotesPage> {
     }
 
     widget.setImage(image);
+  }
+
+  Future<void> pickImageFromGallery() async {
+    Navigator.pop(context, await ImagePicker.pickImage(source: ImageSource.gallery));
+  }
+  
+  Future<void> pickImageFromCamera() async {
+    Navigator.pop(context, await ImagePicker.pickImage(source: ImageSource.camera));
+  }
+
+  Future<void> showChoiceDialog(BuildContext context) async {
+    fn.unfocus();
+
+    final path = await showDialog<File>(context: context, builder:  (BuildContext context) {
+      return AlertDialog(
+        content: Row(
+          children: <Widget>[
+              Expanded(
+                child: InkWell(
+                  child: Text(localize(CAMERA, context), textAlign: TextAlign.center),
+                  onTap: pickImageFromCamera,
+                ),
+              ),
+              Expanded(
+                child: InkWell(
+                  child: Text(localize(GALLERY, context), textAlign: TextAlign.center,),
+                  onTap: pickImageFromGallery,
+                ),
+              )
+          ],
+        )
+      );
+    });
+
+    if (path == null) {
+      return;
+    }
+
+    widget.setImage(path);
   }
 
   void removeImage() {

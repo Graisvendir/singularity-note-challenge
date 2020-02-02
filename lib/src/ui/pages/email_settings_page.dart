@@ -1,4 +1,3 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:note_project/src/models/settings.dart';
 import 'package:note_project/src/resources/validation.dart';
