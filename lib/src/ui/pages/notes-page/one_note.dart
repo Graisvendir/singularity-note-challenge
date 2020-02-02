@@ -43,7 +43,7 @@ class OneNoteState extends State<OneNote> {
               Container(
                 child: Text(
                   data.text,
-                  style: Theme.of(context).textTheme.body1,
+                  style: TextStyle(fontSize: 18),
                   maxLines: 3,
                 ),
                 padding: EdgeInsets.only(bottom: 20.0),

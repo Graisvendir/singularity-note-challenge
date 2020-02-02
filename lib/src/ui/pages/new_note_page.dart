@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:note_project/src/resources/localisation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:note_project/src/blocks/settings_bloc.dart';
 import 'package:note_project/src/constants.dart';
@@ -69,7 +69,6 @@ class _NewNotesPageState extends State<NewNotesPage>
   Widget build(BuildContext context) {
     final bloc = Provider.of<SettingsBloc>(context);
     final mainBloc = Provider.of<MainBloc>(context);
-    String swipeLabel = localize(SWIPE_UP, context);
 
     return GestureDetector(
         onVerticalDragStart: (DragStartDetails details) {
@@ -136,7 +135,6 @@ class _NewNotesPageState extends State<NewNotesPage>
                           children: <Widget>[
                             Icon(
                               Icons.pan_tool,
-                              semanticLabel: swipeLabel,
                             ),
                             Text(localize(SWIPE_DOWN, context),
                                 textAlign: TextAlign.center)
@@ -155,7 +153,6 @@ class _NewNotesPageState extends State<NewNotesPage>
                           children: <Widget>[
                             Icon(
                               Icons.pan_tool,
-                              semanticLabel: swipeLabel,
                             ),
                             Text(localize(SWIPE_UP, context),
                                 textAlign: TextAlign.center)
@@ -177,12 +174,14 @@ class _NewNotesPageState extends State<NewNotesPage>
   }
 
   Widget makeImagePicker() {
+    final theme = Theme.of(context);
+
     return Container(
       child: widget.image == null
           ? IconButton(
               alignment: Alignment.center,
               iconSize: 50,
-              icon: Icon(Icons.add, color: Color(COLOR_GRAY)),
+              icon: Icon(Icons.add, color: theme.textTheme.body1.color),
               onPressed: getImage,
             )
           : Stack(overflow: Overflow.visible, children: [
@@ -218,6 +217,52 @@ class _NewNotesPageState extends State<NewNotesPage>
     }
 
     widget.setImage(image);
+  }
+
+  Future<void> pickImageFromGallery() async {
+    Navigator.pop(
+        context, await ImagePicker.pickImage(source: ImageSource.gallery));
+  }
+
+  Future<void> pickImageFromCamera() async {
+    Navigator.pop(
+        context, await ImagePicker.pickImage(source: ImageSource.camera));
+  }
+
+  Future<void> showChoiceDialog(BuildContext context) async {
+    fn.unfocus();
+
+    final path = await showDialog<File>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              content: Row(
+            children: <Widget>[
+              Expanded(
+                child: InkWell(
+                  child: Text(localize(CAMERA, context),
+                      textAlign: TextAlign.center),
+                  onTap: pickImageFromCamera,
+                ),
+              ),
+              Expanded(
+                child: InkWell(
+                  child: Text(
+                    localize(GALLERY, context),
+                    textAlign: TextAlign.center,
+                  ),
+                  onTap: pickImageFromGallery,
+                ),
+              )
+            ],
+          ));
+        });
+
+    if (path == null) {
+      return;
+    }
+
+    widget.setImage(path);
   }
 
   void removeImage() {

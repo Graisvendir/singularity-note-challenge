@@ -9,6 +9,9 @@ const ALWAYS_SYNC_EMAIL = 'alwaysSyncEmail';
 const ALWAYS_SYNC_EVERNOTE = 'alwaysSyncEvernote';
 const ALWAYS_SYNC_SINGULARITY = 'alwaysSyncSingularity';
 const THEME = 'theme';
+const BANNER_ANDROID =
+    'https://play.google.com/store/apps/details?id=com.sibirix.singularityapp';
+const BANNER_IOS = 'https://apps.apple.com/app/apple-store/id1477784588';
 
 // Assets
 const SVG_ONE_FINGER = 'assets/one-finger.svg';

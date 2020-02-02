@@ -20,6 +20,8 @@ const EVERNOTE_SETTINGS = ['Evernote Settings', 'Настройки Evernote'];
 const REQUIRED_FIELD = ['Required field', 'Обязательное поле'];
 const EMAIL_NOT_CORRECT = ['Email is not correct', 'Некорректный Email'];
 const NO_NOTES = ['There are no notes yet', 'У вас пока нет заметок'];
+const CAMERA = ['Camera', 'Камера'];
+const GALLERY = ['Gallery', 'Галерея'];
 
 String localize(List<String> textConstant, BuildContext context) {
   Locale myLocale = Localizations.localeOf(context);

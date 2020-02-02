@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:hive/hive.dart';
-import 'package:note_project/src/constants.dart';
 import 'package:note_project/src/models/settings.dart';
 
 class SettingsProvider {
